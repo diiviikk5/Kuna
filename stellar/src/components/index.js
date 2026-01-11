@@ -26,3 +26,15 @@ export { default as LiveSatelliteMap } from './LiveSatelliteMap';
 
 // Loading Components
 export { default as DashboardLoader } from './DashboardLoader';
+
+// ISRO Data Components
+export { default as ISRODataPanel } from './ISRODataPanel';
+export { default as ManeuverRecommendation } from './ManeuverRecommendation';
+export { default as ModelTrainer } from './ModelTrainer';
+export { default as ISROEvaluationPanel } from './ISROEvaluationPanel';
+
+// Scientist Workflow Components
+export { default as DataUpload } from './DataUpload';
+export { default as TrainingDashboard } from './TrainingDashboard';
+export { default as ModelEvaluation } from './ModelEvaluation';
+export { default as ModelExporter } from './ModelExporter';

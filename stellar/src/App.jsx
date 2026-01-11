@@ -6,7 +6,8 @@ import {
   SatelliteConsole,
   ForecastLab,
   Residuals,
-  ExportBulletin
+  ExportBulletin,
+  ScientistWorkflow
 } from './pages';
 import { AIAssistant, NotificationToast } from './components';
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/forecast-lab" element={<ForecastLab />} />
           <Route path="/residuals" element={<Residuals />} />
           <Route path="/export" element={<ExportBulletin />} />
+          <Route path="/scientist-workflow" element={<ScientistWorkflow />} />
         </Route>
       </Routes>
     </Router>

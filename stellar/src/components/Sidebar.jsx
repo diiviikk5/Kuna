@@ -6,13 +6,15 @@ import {
     BeakerIcon,
     ChartBarIcon,
     DocumentArrowDownIcon,
-    SignalIcon
+    SignalIcon,
+    CloudArrowUpIcon
 } from '@heroicons/react/24/outline';
 
 const navigation = [
     { name: 'Command Deck', href: '/dashboard', icon: HomeIcon },
     { name: 'Satellite Console', href: '/console', icon: GlobeAltIcon },
     { name: 'Forecast Lab', href: '/forecast-lab', icon: BeakerIcon },
+    { name: 'Scientist Workflow', href: '/scientist-workflow', icon: CloudArrowUpIcon },
     { name: 'Uncertainty & Residuals', href: '/residuals', icon: ChartBarIcon },
     { name: 'Export Bulletin', href: '/export', icon: DocumentArrowDownIcon },
 ];
@@ -21,29 +23,26 @@ const Sidebar = () => {
     const location = useLocation();
 
     return (
-        <aside className="fixed left-0 top-0 h-full w-64 bg-space-900/80 backdrop-blur-xl border-r border-amber-500/10 z-40">
+        <aside className="fixed left-0 top-0 h-full w-64 bg-slate-900 border-r-2 border-slate-700 z-40">
             {/* Logo Section */}
-            <div className="p-6 border-b border-amber-500/10">
-                <div className="flex items-center gap-3">
-                    <div className="relative">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-glow">
-                            <SignalIcon className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-amber-400 shadow-glow-amber animate-pulse" />
+            <div className="p-8 border-b-2 border-slate-700 bg-slate-800 text-white">
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-slate-950 border-2 border-amber-500/50 flex items-center justify-center rotate-45 shadow-[4px_4px_0px_#000]">
+                        <SignalIcon className="w-8 h-8 text-amber-500 -rotate-45" />
                     </div>
                     <div>
-                        <h1 className="font-display font-bold text-lg tracking-wider text-white">
+                        <h1 className="font-mono font-black text-2xl tracking-tighter uppercase italic text-white">
                             STELLAR
                         </h1>
-                        <p className="text-[10px] font-mono text-amber-400/80 tracking-widest">
-                            v1k • GNSS CONSOLE
+                        <p className="text-[11px] font-mono font-black text-slate-300 tracking-widest leading-none">
+                            CONSOLE // V1.0
                         </p>
                     </div>
                 </div>
             </div>
 
             {/* Navigation */}
-            <nav className="p-4 space-y-1">
+            <nav className="p-4 space-y-3 mt-4">
                 {navigation.map((item) => {
                     const isActive = location.pathname === item.href;
                     return (
@@ -54,23 +53,16 @@ const Sidebar = () => {
                         >
                             <motion.div
                                 className={`
-                                    relative flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200
+                                    flex items-center gap-4 px-4 py-3 border-2 transition-all font-mono font-black tracking-tight
                                     ${isActive
-                                        ? 'bg-amber-500/10 text-amber-400'
-                                        : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                        ? 'bg-amber-600 text-black border-amber-700 shadow-[4px_4px_0px_#000]'
+                                        : 'bg-transparent text-slate-300 border-transparent hover:bg-slate-800 hover:text-white hover:border-slate-700'
                                     }
                                 `}
-                                whileHover={{ x: 4 }}
-                                whileTap={{ scale: 0.98 }}
+                                whileTap={{ scale: 0.95 }}
                             >
-                                <item.icon className="w-5 h-5" />
-                                <span className="text-sm">{item.name}</span>
-                                {isActive && (
-                                    <motion.div
-                                        layoutId="activeIndicator"
-                                        className="absolute right-3 w-1.5 h-1.5 rounded-full bg-amber-400 shadow-glow-amber"
-                                    />
-                                )}
+                                <item.icon className={`w-5 h-5 ${isActive ? 'text-black' : 'text-slate-400'}`} />
+                                <span className="text-xs uppercase whitespace-nowrap">{item.name}</span>
                             </motion.div>
                         </NavLink>
                     );
@@ -78,30 +70,27 @@ const Sidebar = () => {
             </nav>
 
             {/* System Status */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-amber-500/10">
-                <div className="space-y-3">
-                    <div className="flex items-center justify-between text-xs">
-                        <span className="text-slate-400 font-mono">System Status</span>
-                        <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                            <span className="text-amber-400 font-mono">ONLINE</span>
-                        </div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 border-t-2 border-slate-700 bg-slate-950/50">
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <span className="text-slate-300 font-mono font-black text-[11px] tracking-widest uppercase italic">SYS_LINK // ACTIVE</span>
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]" />
                     </div>
 
                     <div className="space-y-2">
-                        <div className="flex items-center justify-between text-xs">
-                            <span className="text-slate-500 font-mono">CPU Load</span>
-                            <span className="text-slate-300 font-mono">23%</span>
+                        <div className="flex items-center justify-between text-[10px] font-mono font-black text-slate-400">
+                            <span>RE_PROCESSING_LOAD</span>
+                            <span className="text-amber-500">23%</span>
                         </div>
-                        <div className="h-1 bg-space-700 rounded-full overflow-hidden">
-                            <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: '23%' }} />
+                        <div className="h-1.5 border border-slate-800 bg-slate-900">
+                            <div className="h-full bg-slate-400" style={{ width: '23%' }} />
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs">
-                        <span className="text-slate-500 font-mono">Last Sync</span>
-                        <span className="text-amber-400/80 font-mono">
-                            {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    <div className="flex items-center justify-between text-[10px] font-mono font-black text-slate-500 border-t border-slate-800 pt-3">
+                        <span>LAST_SYNC</span>
+                        <span className="text-slate-300">
+                            {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}_UTC
                         </span>
                     </div>
                 </div>
