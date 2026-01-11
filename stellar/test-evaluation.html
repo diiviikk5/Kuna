@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ISRO Evaluation Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: #1e293b;
+            border: 2px solid #334155;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .pass { color: #10b981; }
+        .fail { color: #ef4444; }
+        .info { color: #f59e0b; }
+        pre {
+            background: #0f172a;
+            padding: 10px;
+            overflow-x: auto;
+            border-left: 3px solid #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 ISRO EVALUATION FRAMEWORK TEST</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Statistical Tests Module</h2>
+        <div id="test1"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Shapiro-Wilk Test (Normal Distribution)</h2>
+        <div id="test2"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Shapiro-Wilk Test (Non-Normal Distribution)</h2>
+        <div id="test3"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Residual Statistics</h2>
+        <div id="test4"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 5: Q-Q Plot Data Generation</h2>
+        <div id="test5"></div>
+    </div>
+    
+    <script type="module">
+        // Import the statistical tests
+        import { 
+            shapiroWilkTest, 
+            calculateResidualStats, 
+            generateQQPlotData 
+        } from './src/utils/statisticalTests.js';
+        
+        // Helper to display results
+        function showResult(testId, passed, message, details = null) {
+            const el = document.getElementById(testId);
+            const status = passed ? '<span class="pass">✓ PASS</span>' : '<span class="fail">✗ FAIL</span>';
+            let html = `${status} - ${message}`;
+            if (details) {
+                html += `<pre>${JSON.stringify(details, null, 2)}</pre>`;
+            }
+            el.innerHTML = html;
+        }
+        
+        // Test 1: Module loads
+        try {
+            showResult('test1', true, 'All functions imported successfully', {
+                shapiroWilkTest: typeof shapiroWilkTest,
+                calculateResidualStats: typeof calculateResidualStats,
+                generateQQPlotData: typeof generateQQPlotData
+            });
+        } catch (err) {
+            showResult('test1', false, 'Import failed: ' + err.message);
+        }
+        
+        // Test 2: Normal distribution (should pass normality test)
+        try {
+            // Generate approximately normal data using Box-Muller transform
+            const normalData = [];
+            for (let i = 0; i < 100; i++) {
+                const u1 = Math.random();
+                const u2 = Math.random();
+                const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+                normalData.push(z);
+            }
+            
+            const result = shapiroWilkTest(normalData);
+            const passed = result.W > 0.95 && !result.rejectNull;
+            
+            showResult('test2', passed, 'Normal data tested', {
+                W_statistic: result.W.toFixed(4),
+                p_value: result.pValue.toFixed(4),
+                hypothesis: result.hypothesis,
+                rejectNull: result.rejectNull,
+                interpretation: result.rejectNull 
+                    ? '❌ Distribution is NOT normal (unexpected)' 
+                    : '✅ Distribution IS normal (expected)',
+                sampleSize: normalData.length
+            });
+        } catch (err) {
+            showResult('test2', false, 'Test failed: ' + err.message);
+        }
+        
+        // Test 3: Uniform distribution (should fail normality test)
+        try {
+            const uniformData = Array.from({length: 100}, () => Math.random() * 10);
+            const result = shapiroWilkTest(uniformData);
+            const passed = result.rejectNull; // Should reject null hypothesis
+            
+            showResult('test3', passed, 'Uniform data tested (should fail normality)', {
+                W_statistic: result.W.toFixed(4),
+                p_value: result.pValue.toFixed(4),
+                hypothesis: result.hypothesis,
+                rejectNull: result.rejectNull,
+                interpretation: result.rejectNull 
+                    ? '✅ Distribution is NOT normal (expected)' 
+                    : '❌ Distribution IS normal (unexpected)',
+                sampleSize: uniformData.length
+            });
+        } catch (err) {
+            showResult('test3', false, 'Test failed: ' + err.message);
+        }
+        
+        // Test 4: Residual statistics
+        try {
+            const residuals = [0.1, -0.2, 0.15, -0.05, 0.3, -0.1, 0.05, -0.15];
+            const stats = calculateResidualStats(residuals);
+            
+            const expectedMean = residuals.reduce((a, b) => a + b, 0) / residuals.length;
+            const meanMatch = Math.abs(stats.mean - expectedMean) < 0.001;
+            
+            showResult('test4', meanMatch, 'Residual statistics calculated', {
+                mean: stats.mean.toFixed(6),
+                std: stats.std.toFixed(6),
+                min: stats.min.toFixed(6),
+                max: stats.max.toFixed(6),
+                count: stats.count,
+                expectedMean: expectedMean.toFixed(6)
+            });
+        } catch (err) {
+            showResult('test4', false, 'Test failed: ' + err.message);
+        }
+        
+        // Test 5: Q-Q plot data
+        try {
+            const testData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            const qqData = generateQQPlotData(testData);
+            
+            const passed = qqData.length === testData.length && 
+                          qqData[0].hasOwnProperty('theoretical') && 
+                          qqData[0].hasOwnProperty('actual');
+            
+            showResult('test5', passed, 'Q-Q plot data generated', {
+                dataPoints: qqData.length,
+                firstPoint: {
+                    theoretical: qqData[0].theoretical.toFixed(4),
+                    actual: qqData[0].actual.toFixed(4)
+                },
+                lastPoint: {
+                    theoretical: qqData[qqData.length - 1].theoretical.toFixed(4),
+                    actual: qqData[qqData.length - 1].actual.toFixed(4)
+                }
+            });
+        } catch (err) {
+            showResult('test5', false, 'Test failed: ' + err.message);
+        }
+        
+        // Summary
+        console.log('✅ All statistical tests completed');
+        console.log('📊 Now navigate to /forecast-lab in the main app');
+        console.log('🎯 Go to TRAINING_WINDOW tab → Train model → Check ISRO_EVALUATION tab');
+    </script>
+</body>
+</html>

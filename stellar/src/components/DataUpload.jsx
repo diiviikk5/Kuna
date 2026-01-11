@@ -254,30 +254,34 @@ const DataUpload = ({ onDataLoaded }) => {
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <button
-                                onClick={(e) => { e.stopPropagation(); loadSampleData('DATA_MEO_Train2.csv'); }}
-                                className="p-4 bg-slate-950 border-2 border-slate-700 hover:border-cyan-500 hover:bg-cyan-500/5 transition-all group"
+                                type="button"
+                                onClick={() => loadSampleData('DATA_MEO_Train2.csv')}
+                                className="p-4 bg-slate-950 border-2 border-slate-700 hover:border-cyan-500 hover:bg-cyan-500/5 transition-all group cursor-pointer"
                             >
                                 <div className="text-xs font-mono font-black text-cyan-400 group-hover:text-cyan-300">MEO_Train2</div>
                                 <div className="text-[10px] font-mono text-slate-500 mt-1">244 samples</div>
                                 <div className="text-[9px] font-mono text-emerald-500 mt-1">RECOMMENDED</div>
                             </button>
                             <button
-                                onClick={(e) => { e.stopPropagation(); loadSampleData('DATA_MEO_Train.csv'); }}
-                                className="p-4 bg-slate-950 border-2 border-slate-700 hover:border-amber-500 hover:bg-amber-500/5 transition-all group"
+                                type="button"
+                                onClick={() => loadSampleData('DATA_MEO_Train.csv')}
+                                className="p-4 bg-slate-950 border-2 border-slate-700 hover:border-amber-500 hover:bg-amber-500/5 transition-all group cursor-pointer"
                             >
                                 <div className="text-xs font-mono font-black text-amber-400 group-hover:text-amber-300">MEO_Train</div>
                                 <div className="text-[10px] font-mono text-slate-500 mt-1">90 samples</div>
                             </button>
                             <button
-                                onClick={(e) => { e.stopPropagation(); loadSampleData('DATA_GEO_Train.csv'); }}
-                                className="p-4 bg-slate-950 border-2 border-slate-700 hover:border-purple-500 hover:bg-purple-500/5 transition-all group"
+                                type="button"
+                                onClick={() => loadSampleData('DATA_GEO_Train.csv')}
+                                className="p-4 bg-slate-950 border-2 border-slate-700 hover:border-purple-500 hover:bg-purple-500/5 transition-all group cursor-pointer"
                             >
                                 <div className="text-xs font-mono font-black text-purple-400 group-hover:text-purple-300">GEO_Train</div>
                                 <div className="text-[10px] font-mono text-slate-500 mt-1">142 samples</div>
                             </button>
                             <button
-                                onClick={(e) => { e.stopPropagation(); loadSampleData('DATA_MEO_Test.csv'); }}
-                                className="p-4 bg-slate-950 border-2 border-slate-700 hover:border-rose-500 hover:bg-rose-500/5 transition-all group"
+                                type="button"
+                                onClick={() => loadSampleData('DATA_MEO_Test.csv')}
+                                className="p-4 bg-slate-950 border-2 border-slate-700 hover:border-rose-500 hover:bg-rose-500/5 transition-all group cursor-pointer"
                             >
                                 <div className="text-xs font-mono font-black text-rose-400 group-hover:text-rose-300">MEO_Test</div>
                                 <div className="text-[10px] font-mono text-slate-500 mt-1">Test Data</div>

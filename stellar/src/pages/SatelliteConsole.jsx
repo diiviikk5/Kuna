@@ -23,11 +23,16 @@ import { initializeAI, generateForecast, getAIStatus } from '../services/aiServi
 import { generateHistoricalData } from '../services/liveDataService';
 import { useAppStore } from '../store/appStore';
 
+// Lazy load ISRO panel
+import { lazy, Suspense } from 'react';
+const ISRODataPanel = lazy(() => import('../components/ISRODataPanel'));
+
 const SatelliteConsole = () => {
     const [selectedSatellite, setSelectedSatellite] = useState(satellites[0]);
     const [selectedSignal, setSelectedSignal] = useState('clock');
     const [selectedHorizon, setSelectedHorizon] = useState('2h');
     const [showBaseline, setShowBaseline] = useState(false);
+    const [dataSource, setDataSource] = useState('isro'); // 'synthetic' | 'isro'
     const [forecastData, setForecastData] = useState(null);
     const [aiForecast, setAiForecast] = useState(null);
     const [isAIInferencing, setIsAIInferencing] = useState(false);
@@ -248,150 +253,190 @@ const SatelliteConsole = () => {
                                 onSelect={setSelectedSatellite}
                             />
                         </div>
+
+                        {/* Data Source Toggle */}
+                        <div>
+                            <label className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-2 block">
+                                Data Source
+                            </label>
+                            <div className="flex bg-space-800 p-1 border border-console-border rounded-lg">
+                                <button
+                                    onClick={() => setDataSource('synthetic')}
+                                    className={`flex-1 py-1.5 text-xs font-medium rounded transition-all ${dataSource === 'synthetic'
+                                        ? 'bg-stellar-primary text-black font-bold'
+                                        : 'text-slate-400 hover:text-white'
+                                        }`}
+                                >
+                                    SYNTHETIC
+                                </button>
+                                <button
+                                    onClick={() => setDataSource('isro')}
+                                    className={`flex-1 py-1.5 text-xs font-medium rounded transition-all ${dataSource === 'isro'
+                                        ? 'bg-amber-500 text-black font-bold'
+                                        : 'text-slate-400 hover:text-white'
+                                        }`}
+                                >
+                                    ISRO (REAL)
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </aside>
 
-                {/* Main Chart Area */}
-                <div className="flex-1 flex flex-col">
-                    {/* Chart Container */}
-                    <div className="flex-1 p-6">
-                        <motion.div
-                            className="console-panel p-6 h-full"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                        >
-                            <div className="flex items-center justify-between mb-4">
-                                <div>
-                                    <h3 className="text-lg font-display font-semibold text-white">
-                                        {selectedSignal === 'clock' ? 'Clock Bias Error' : `Ephemeris: ${selectedSignal.charAt(0).toUpperCase() + selectedSignal.slice(1)}`}
-                                    </h3>
-                                    <p className="text-sm text-slate-400">
-                                        Historical data (24h) + Forecast ({selectedHorizon} horizon)
-                                    </p>
-                                </div>
-
-                                <div className="flex items-center gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <span className="w-3 h-0.5 bg-gradient-to-r from-stellar-cyan to-stellar-primary rounded" />
-                                        <span className="text-xs text-slate-400">Historical</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="w-3 h-0.5 bg-gradient-to-r from-stellar-primary to-stellar-accent rounded border-dashed" style={{ borderTop: '2px dashed' }} />
-                                        <span className="text-xs text-slate-400">Forecast</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="w-3 h-3 rounded bg-stellar-primary/30" />
-                                        <span className="text-xs text-slate-400">95% CI</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {forecastData && (
-                                <ForecastChart
-                                    pastData={forecastData.past}
-                                    forecastData={forecastData.forecast}
-                                    showBaseline={showBaseline}
-                                    showConfidence={true}
-                                    height={400}
+                {/* Main Content Area */}
+                <div className="flex-1 flex flex-col bg-slate-900">
+                    {dataSource === 'isro' ? (
+                        <div className="p-6 h-full overflow-y-auto">
+                            <Suspense fallback={<div className="text-white p-4 font-mono">Loading ISRO Uplink...</div>}>
+                                <ISRODataPanel
+                                    orbitType={selectedSatellite.id.includes('1I') ? 'MEO' : 'GEO'}
                                 />
-                            )}
+                            </Suspense>
+                        </div>
+                    ) : (
+                        <>
+                            {/* Chart Container */}
+                            <div className="flex-1 p-6">
+                                <motion.div
+                                    className="console-panel p-6 h-full"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                >
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 className="text-lg font-display font-semibold text-white">
+                                                {selectedSignal === 'clock' ? 'Clock Bias Error' : `Ephemeris: ${selectedSignal.charAt(0).toUpperCase() + selectedSignal.slice(1)}`}
+                                            </h3>
+                                            <p className="text-sm text-slate-400">
+                                                Historical data (24h) + Forecast ({selectedHorizon} horizon)
+                                            </p>
+                                        </div>
 
-                            {/* Event Markers Legend */}
-                            <div className="flex items-center gap-6 mt-4 pt-4 border-t border-console-border">
-                                <div className="flex items-center gap-2">
-                                    <span className="w-3 h-3 rounded-full bg-stellar-amber/50 border-2 border-stellar-amber" />
-                                    <span className="text-xs text-slate-400">NOW (Last Data Point)</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="w-3 h-3 rounded-full bg-stellar-primary/50 border-2 border-stellar-primary" />
-                                    <span className="text-xs text-slate-400">Upload Boundary</span>
-                                </div>
+                                        <div className="flex items-center gap-4">
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-3 h-0.5 bg-gradient-to-r from-stellar-cyan to-stellar-primary rounded" />
+                                                <span className="text-xs text-slate-400">Historical</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-3 h-0.5 bg-gradient-to-r from-stellar-primary to-stellar-accent rounded border-dashed" style={{ borderTop: '2px dashed' }} />
+                                                <span className="text-xs text-slate-400">Forecast</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-3 h-3 rounded bg-stellar-primary/30" />
+                                                <span className="text-xs text-slate-400">95% CI</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {forecastData && (
+                                        <ForecastChart
+                                            pastData={forecastData.past}
+                                            forecastData={forecastData.forecast}
+                                            showBaseline={showBaseline}
+                                            showConfidence={true}
+                                            height={400}
+                                        />
+                                    )}
+
+                                    {/* Event Markers Legend */}
+                                    <div className="flex items-center gap-6 mt-4 pt-4 border-t border-console-border">
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-full bg-stellar-amber/50 border-2 border-stellar-amber" />
+                                            <span className="text-xs text-slate-400">NOW (Last Data Point)</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-full bg-stellar-primary/50 border-2 border-stellar-primary" />
+                                            <span className="text-xs text-slate-400">Upload Boundary</span>
+                                        </div>
+                                    </div>
+                                </motion.div>
                             </div>
-                        </motion.div>
-                    </div>
 
-                    {/* Bottom Panel - Prediction Details */}
-                    <div className="p-6 pt-0">
-                        <motion.div
-                            className="console-panel p-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                        >
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                {/* Predicted Drift */}
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-2 text-slate-400">
-                                        <ArrowTrendingUpIcon className="w-4 h-4" />
-                                        <span className="text-xs font-mono uppercase tracking-wider">
-                                            Predicted Drift at +{selectedHorizon}
-                                        </span>
-                                    </div>
-                                    <div className="text-3xl font-display font-bold text-gradient-primary">
-                                        {prediction ? prediction.mean.toFixed(4) : '—'}
-                                        <span className="text-lg text-slate-400 ml-1">ns</span>
-                                    </div>
-                                </div>
+                            {/* Bottom Panel - Prediction Details */}
+                            <div className="p-6 pt-0">
+                                <motion.div
+                                    className="console-panel p-6"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                >
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                        {/* Predicted Drift */}
+                                        <div className="space-y-2">
+                                            <div className="flex items-center gap-2 text-slate-400">
+                                                <ArrowTrendingUpIcon className="w-4 h-4" />
+                                                <span className="text-xs font-mono uppercase tracking-wider">
+                                                    Predicted Drift at +{selectedHorizon}
+                                                </span>
+                                            </div>
+                                            <div className="text-3xl font-display font-bold text-gradient-primary">
+                                                {prediction ? prediction.mean.toFixed(4) : '—'}
+                                                <span className="text-lg text-slate-400 ml-1">ns</span>
+                                            </div>
+                                        </div>
 
-                                {/* Confidence Interval */}
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-2 text-slate-400">
-                                        <InformationCircleIcon className="w-4 h-4" />
-                                        <span className="text-xs font-mono uppercase tracking-wider">
-                                            95% Confidence Interval
-                                        </span>
-                                    </div>
-                                    <div className="text-2xl font-mono text-white">
-                                        [{prediction ? prediction.lower95.toFixed(4) : '—'}, {prediction ? prediction.upper95.toFixed(4) : '—'}]
-                                    </div>
-                                </div>
+                                        {/* Confidence Interval */}
+                                        <div className="space-y-2">
+                                            <div className="flex items-center gap-2 text-slate-400">
+                                                <InformationCircleIcon className="w-4 h-4" />
+                                                <span className="text-xs font-mono uppercase tracking-wider">
+                                                    95% Confidence Interval
+                                                </span>
+                                            </div>
+                                            <div className="text-2xl font-mono text-white">
+                                                [{prediction ? prediction.lower95.toFixed(4) : '—'}, {prediction ? prediction.upper95.toFixed(4) : '—'}]
+                                            </div>
+                                        </div>
 
-                                {/* Uncertainty */}
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-2 text-slate-400">
-                                        <ExclamationTriangleIcon className="w-4 h-4" />
-                                        <span className="text-xs font-mono uppercase tracking-wider">
-                                            Uncertainty (σ)
-                                        </span>
-                                    </div>
-                                    <div className="text-2xl font-mono text-stellar-cyan">
-                                        ±{prediction ? prediction.uncertainty.toFixed(4) : '—'}
-                                        <span className="text-lg text-slate-400 ml-1">ns</span>
-                                    </div>
-                                </div>
+                                        {/* Uncertainty */}
+                                        <div className="space-y-2">
+                                            <div className="flex items-center gap-2 text-slate-400">
+                                                <ExclamationTriangleIcon className="w-4 h-4" />
+                                                <span className="text-xs font-mono uppercase tracking-wider">
+                                                    Uncertainty (σ)
+                                                </span>
+                                            </div>
+                                            <div className="text-2xl font-mono text-stellar-cyan">
+                                                ±{prediction ? prediction.uncertainty.toFixed(4) : '—'}
+                                                <span className="text-lg text-slate-400 ml-1">ns</span>
+                                            </div>
+                                        </div>
 
-                                {/* Risk Level */}
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-2 text-slate-400">
-                                        <CheckCircleIcon className="w-4 h-4" />
-                                        <span className="text-xs font-mono uppercase tracking-wider">
-                                            Risk Assessment
-                                        </span>
-                                    </div>
-                                    {prediction && (
-                                        <div className={`
+                                        {/* Risk Level */}
+                                        <div className="space-y-2">
+                                            <div className="flex items-center gap-2 text-slate-400">
+                                                <CheckCircleIcon className="w-4 h-4" />
+                                                <span className="text-xs font-mono uppercase tracking-wider">
+                                                    Risk Assessment
+                                                </span>
+                                            </div>
+                                            {prediction && (
+                                                <div className={`
                       inline-flex items-center gap-2 px-4 py-2 rounded-lg
                       ${getRiskConfig(prediction.riskLevel).bg}
                       border ${getRiskConfig(prediction.riskLevel).border}
                     `}>
-                                            <span className={`w-2 h-2 rounded-full ${getRiskConfig(prediction.riskLevel).color.replace('text-', 'bg-')} animate-pulse`} />
-                                            <span className={`text-lg font-display font-bold ${getRiskConfig(prediction.riskLevel).color}`}>
-                                                {prediction.riskLevel}
-                                            </span>
+                                                    <span className={`w-2 h-2 rounded-full ${getRiskConfig(prediction.riskLevel).color.replace('text-', 'bg-')} animate-pulse`} />
+                                                    <span className={`text-lg font-display font-bold ${getRiskConfig(prediction.riskLevel).color}`}>
+                                                        {prediction.riskLevel}
+                                                    </span>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
+                                    </div>
+                                </motion.div>
                             </div>
-                        </motion.div>
-                    </div>
 
-                    {/* Evidence Strip */}
-                    <EvidenceStrip
-                        validationWindow="Day 7 → Day 8"
-                        baselineRMSE="0.42 ns"
-                        stellarRMSE="0.18 ns"
-                        improvement="57%"
-                    />
+
+                            {/* Evidence Strip */}
+                            <EvidenceStrip
+                                validationWindow="Day 7 → Day 8"
+                                baselineRMSE="0.42 ns"
+                                stellarRMSE="0.18 ns"
+                                improvement="57%"
+                            />
+                        </>
+                    )}
                 </div>
             </div>
         </div>
