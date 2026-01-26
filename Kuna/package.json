@@ -1,0 +1,38 @@
+{
+  "name": "kuna-monorepo",
+  "version": "0.1.0",
+  "description": "Instant State for Modern Applications. Zero-Config DB + Agent Memory + Snapshot Protocol.",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "next dev",
+    "dev:api": "npm run dev -w @kuna/api",
+    "dev:sdk": "npm run dev -w kuna",
+    "build": "next build",
+    "build:api": "npm run build -w @kuna/api",
+    "build:sdk": "npm run build -w kuna",
+    "deploy:api": "npm run deploy -w @kuna/api",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.26.2",
+    "lucide-react": "^0.562.0",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "tailwind-merge": "^3.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
