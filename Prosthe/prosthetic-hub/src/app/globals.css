@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ── CSS Variables ── */
+:root {
+  --background: #050508;
+  --foreground: #fafaf9;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: rgba(255, 255, 255, 0.45);
+  --accent: #ff4dd2;
+  --accent-warm: #ff8533;
+  --accent-lime: #c0ff4d;
+  --accent-foreground: #050508;
+  --border: rgba(255, 255, 255, 0.08);
+  --ring: rgba(255, 77, 210, 0.3);
+  --card: rgba(255, 255, 255, 0.03);
+  --card-foreground: #fafaf9;
+  --primary: #ff4dd2;
+  --primary-foreground: #050508;
+  --radius: 12px;
+}
+
+/* ── Base ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Video Background — minimal overlay, let it breathe ── */
+.video-bg-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.video-bg-wrap video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+/* Very subtle overlay — just enough for text readability, NOT blurring the video */
+.video-bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg,
+      rgba(5, 5, 8, 0.45) 0%,
+      rgba(5, 5, 8, 0.2) 30%,
+      rgba(5, 5, 8, 0.15) 50%,
+      rgba(5, 5, 8, 0.25) 70%,
+      rgba(5, 5, 8, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* ── Content Layer ── */
+.content-layer {
+  position: relative;
+  z-index: 2;
+  contain: layout;
+}
+
+/* ── Mobile Performance ── */
+@media (hover: none) {
+
+  /* Remove hover delay on touch devices */
+  * {
+    touch-action: manipulation;
+  }
+
+  /* Disable hover effects on mobile to avoid sticky :hover */
+  .group:hover {
+    background-color: inherit;
+  }
+}
+
+/* ── Respect reduced motion preference ── */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(255, 77, 210, 0.25);
+  color: white;
+}
+
+/* ── Text rendering ── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
