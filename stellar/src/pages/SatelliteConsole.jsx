@@ -272,7 +272,7 @@ const SatelliteConsole = () => {
                                 <button
                                     onClick={() => setDataSource('isro')}
                                     className={`flex-1 py-1.5 text-xs font-medium rounded transition-all ${dataSource === 'isro'
-                                        ? 'bg-amber-500 text-black font-bold'
+                                        ? 'bg-indigo-400 text-black font-bold'
                                         : 'text-slate-400 hover:text-white'
                                         }`}
                                 >
@@ -284,7 +284,7 @@ const SatelliteConsole = () => {
                 </aside>
 
                 {/* Main Content Area */}
-                <div className="flex-1 flex flex-col bg-slate-900">
+                <div className="flex-1 flex flex-col bg-[#0f172a]/80">
                     {dataSource === 'isro' ? (
                         <div className="p-6 h-full overflow-y-auto">
                             <Suspense fallback={<div className="text-white p-4 font-mono">Loading ISRO Uplink...</div>}>

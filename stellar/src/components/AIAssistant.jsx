@@ -61,13 +61,47 @@ const AIAssistant = ({ context = {} }) => {
         // Show typing indicator
         setIsTyping(true);
 
-        // Get AI response (using fallback for now)
+        // Try MiniMax M2.5 first, fall back to keyword matching
+        const MINIMAX_KEY = import.meta.env.VITE_MINIMAX_API_KEY;
+        if (MINIMAX_KEY) {
+            try {
+                const res = await fetch('https://api.minimaxi.chat/v1/text/chatcompletion_v2', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${MINIMAX_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'MiniMax-M1',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: `You are STELLAR-AI, the intelligent agent for STELLAR — an autonomous Geo-AI platform for satellite monitoring, flood prediction, crop health, and GNSS forecasting. You are powered by MiniMax M2.5 and integrated with Openclaw agentic skills. Be professional, concise, technical, and insightful. The platform monitors satellites across GPS, Galileo, GLONASS, BeiDou, NavIC, and QZSS using a Transformer-LSTM hybrid architecture with 57% error reduction over baseline.`
+                            },
+                            ...messages.slice(-6).map(m => ({ role: m.role, content: m.content })),
+                            { role: 'user', content: userMessage }
+                        ],
+                        max_tokens: 800,
+                        temperature: 0.7
+                    })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const aiText = data.choices?.[0]?.message?.content || data.reply || getAIResponse(userMessage, context);
+                    addChatMessage({ role: 'assistant', content: aiText });
+                    setIsTyping(false);
+                    return;
+                }
+            } catch (err) {
+                console.warn('MiniMax API error, using fallback:', err);
+            }
+        }
+
+        // Fallback: keyword-based response
         setTimeout(() => {
             const response = getAIResponse(userMessage, context);
-            addChatMessage({
-                role: 'assistant',
-                content: response
-            });
+            addChatMessage({ role: 'assistant', content: response });
             setIsTyping(false);
         }, 500 + Math.random() * 1000);
     };
@@ -136,7 +170,7 @@ const AIAssistant = ({ context = {} }) => {
                                         <h3 className="text-white font-semibold">STELLAR-AI</h3>
                                         <div className="flex items-center gap-1.5">
                                             <span className="w-2 h-2 rounded-full bg-stellar-emerald animate-pulse" />
-                                            <span className="text-xs text-slate-400">Mission Control Assistant</span>
+                                            <span className="text-xs text-slate-400">Powered by MiniMax M2.5</span>
                                         </div>
                                     </div>
                                 </div>

@@ -27,9 +27,9 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
 
     if (!evaluationResults) {
         return (
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-12 flex flex-col items-center justify-center">
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-12 flex flex-col items-center justify-center">
                 <DocumentTextIcon className="w-16 h-16 text-slate-600 mb-4" />
-                <p className="text-sm font-mono text-slate-500 uppercase tracking-widest">
+                <p className="text-sm font-mono text-slate-500 uppercase tracking-wider">
                     No evaluation data available
                 </p>
             </div>
@@ -57,12 +57,12 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
     }));
 
     const MetricCard = ({ label, value, icon: Icon, color = 'text-white', unit = '' }) => (
-        <div className="neo-panel bg-slate-950 border-slate-800 p-4">
+        <div className="neo-panel bg-[#020617] border-slate-800 p-4">
             <div className="flex items-center justify-between mb-2">
                 <Icon className={`w-4 h-4 ${color}`} />
-                <span className="text-[9px] font-mono font-black text-slate-500 uppercase tracking-widest">{label}</span>
+                <span className="text-[9px] font-semibold text-slate-500 uppercase tracking-wider">{label}</span>
             </div>
-            <div className={`text-2xl font-mono font-black ${color}`}>
+            <div className={`text-2xl font-semibold ${color}`}>
                 {typeof value === 'number' ? value.toFixed(4) : value}
                 <span className="text-sm ml-1">{unit}</span>
             </div>
@@ -71,7 +71,7 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
 
     const getFeatureColor = (feature) => {
         const colors = {
-            radial: 'text-amber-400 border-amber-500',
+            radial: 'text-amber-400 border-indigo-500/30',
             along: 'text-emerald-400 border-emerald-500',
             cross: 'text-blue-400 border-blue-500',
             clock: 'text-rose-400 border-rose-500'
@@ -82,9 +82,9 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
     return (
         <div className="space-y-6">
             {/* Overall Metrics */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
-                <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest mb-6 flex items-center gap-3">
-                    <ChartBarIcon className="w-5 h-5 text-amber-500" />
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6 flex items-center gap-3">
+                    <ChartBarIcon className="w-5 h-5 text-indigo-400" />
                     OVERALL_MODEL_PERFORMANCE
                 </h3>
 
@@ -120,13 +120,13 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
             {/* Feature Selection & View Mode */}
             <div className="flex flex-wrap gap-4">
                 <div className="flex-1 min-w-[200px]">
-                    <label className="text-[10px] font-mono font-black text-slate-400 uppercase tracking-widest mb-2 block">
+                    <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2 block">
                         SELECT_FEATURE
                     </label>
                     <select
                         value={selectedFeature}
                         onChange={(e) => setSelectedFeature(e.target.value)}
-                        className="w-full px-4 py-3 bg-slate-950 border-2 border-slate-700 text-white font-mono text-sm font-black uppercase tracking-widest focus:border-amber-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-[#020617] border border-white/[0.06] text-white font-mono text-sm font-bold uppercase tracking-wider focus:border-indigo-500/30 focus:outline-none"
                     >
                         {features.map(f => (
                             <option key={f} value={f}>{f.toUpperCase()}_ERROR</option>
@@ -135,13 +135,13 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
                 </div>
 
                 <div className="flex-1 min-w-[200px]">
-                    <label className="text-[10px] font-mono font-black text-slate-400 uppercase tracking-widest mb-2 block">
+                    <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2 block">
                         VIEW_MODE
                     </label>
                     <select
                         value={viewMode}
                         onChange={(e) => setViewMode(e.target.value)}
-                        className="w-full px-4 py-3 bg-slate-950 border-2 border-slate-700 text-white font-mono text-sm font-black uppercase tracking-widest focus:border-amber-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-[#020617] border border-white/[0.06] text-white font-mono text-sm font-bold uppercase tracking-wider focus:border-indigo-500/30 focus:outline-none"
                     >
                         <option value="timeSeries">TIME_SERIES</option>
                         <option value="scatter">SCATTER_PLOT</option>
@@ -155,20 +155,20 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
                 {features.map(feature => (
                     <motion.div
                         key={feature}
-                        className={`neo-panel bg-slate-950 border-2 p-4 cursor-pointer hover:shadow-[4px_4px_0px_#000] transition-all ${
-                            selectedFeature === feature ? 'shadow-[4px_4px_0px_#000]' : ''
+                        className={`neo-panel bg-[#020617] border-2 p-4 cursor-pointer hover:shadow-lg shadow-indigo-500/10 transition-all ${
+                            selectedFeature === feature ? 'shadow-lg shadow-indigo-500/10' : ''
                         } ${getFeatureColor(feature)}`}
                         onClick={() => setSelectedFeature(feature)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
-                        <div className="text-[10px] font-mono font-black text-slate-400 uppercase tracking-widest mb-2">
+                        <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
                             {feature}
                         </div>
-                        <div className="text-2xl font-mono font-black text-white italic">
+                        <div className="text-2xl font-semibold text-white italic">
                             {featureRMSE[feature]?.toFixed(4)}
                         </div>
-                        <div className="text-[9px] font-mono text-slate-500 uppercase tracking-widest mt-1">
+                        <div className="text-[9px] font-mono text-slate-500 uppercase tracking-wider mt-1">
                             RMSE
                         </div>
                     </motion.div>
@@ -176,16 +176,16 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
             </div>
 
             {/* Charts */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest flex items-center gap-3">
-                        <ChartBarIcon className="w-5 h-5 text-amber-500" />
+                    <h3 className="text-sm font-semibold text-white uppercase tracking-wider flex items-center gap-3">
+                        <ChartBarIcon className="w-5 h-5 text-indigo-400" />
                         {selectedFeature.toUpperCase()}_ERROR_ANALYSIS
                     </h3>
                     {onExport && (
                         <button
                             onClick={() => onExport(evaluationResults)}
-                            className="px-4 py-2 bg-amber-600 text-black font-mono font-black text-[10px] uppercase tracking-[0.2em] border-2 border-amber-500 hover:bg-amber-500 hover:shadow-[4px_4px_0px_#000] transition-all"
+                            className="px-4 py-2 bg-indigo-500 text-black font-semibold text-[10px] uppercase tracking-wider border border-indigo-500/30 hover:bg-indigo-400 hover:shadow-lg shadow-indigo-500/10 transition-all"
                         >
                             EXPORT_DATA
                         </button>
@@ -215,7 +215,7 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
                                 />
                                 <Legend
                                     wrapperStyle={{ paddingTop: 20 }}
-                                    formatter={(value) => <span className="text-slate-300 text-[11px] font-black font-mono tracking-[0.2em]">{value}</span>}
+                                    formatter={(value) => <span className="text-slate-300 text-[11px] font-bold font-mono tracking-wider">{value}</span>}
                                 />
                                 <Line
                                     type="monotone"
@@ -315,11 +315,11 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
             </div>
 
             {/* R² Quality Indicator */}
-            <div className={`neo-panel bg-slate-950 border-2 p-6 flex items-center gap-6 ${
-                r2 > 0.9 ? 'border-emerald-500' : r2 > 0.7 ? 'border-amber-500' : 'border-rose-500'
+            <div className={`neo-panel bg-[#020617] border-2 p-6 flex items-center gap-6 ${
+                r2 > 0.9 ? 'border-emerald-500' : r2 > 0.7 ? 'border-indigo-500/30' : 'border-rose-500'
             }`}>
                 <div className={`w-16 h-16 flex items-center justify-center ${
-                    r2 > 0.9 ? 'bg-emerald-600' : r2 > 0.7 ? 'bg-amber-600' : 'bg-rose-600'
+                    r2 > 0.9 ? 'bg-emerald-600' : r2 > 0.7 ? 'bg-indigo-500' : 'bg-rose-600'
                 }`}>
                     {r2 > 0.7 ? (
                         <CheckCircleIcon className="w-10 h-10 text-black" />
@@ -328,7 +328,7 @@ const ModelEvaluation = ({ evaluationResults, onExport }) => {
                     )}
                 </div>
                 <div>
-                    <h4 className="text-xs font-mono font-black text-white uppercase tracking-widest mb-1">
+                    <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-1">
                         MODEL_R²_QUALITY
                     </h4>
                     <p className="text-[11px] font-bold text-slate-300">

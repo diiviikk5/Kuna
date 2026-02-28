@@ -81,7 +81,7 @@ const StatCounter = ({ value, label, suffix = '', delay }) => {
             <div className="text-4xl sm:text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-amber-300 bg-clip-text text-transparent">
                 {value.includes('.') ? count.toFixed(1) : Math.floor(count)}{suffix}
             </div>
-            <div className="text-slate-500 mt-2 md:mt-3 text-[10px] md:text-xs uppercase tracking-[0.15em] md:tracking-[0.2em]">{label}</div>
+            <div className="text-slate-500 mt-2 md:mt-3 text-[10px] md:text-xs uppercase tracking-wide md:tracking-wider">{label}</div>
         </motion.div>
     );
 };
@@ -196,7 +196,7 @@ const Landing = () => {
                             <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-display font-black tracking-tight text-white leading-[0.9]">
                                 STELLAR
                             </span>
-                            <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-extralight tracking-[0.2em] md:tracking-[0.25em] text-orange-200/80 mt-2 md:mt-3">
+                            <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-extralight tracking-wider md:tracking-[0.25em] text-orange-200/80 mt-2 md:mt-3">
                                 v1k
                             </span>
                         </motion.h1>
@@ -263,7 +263,7 @@ const Landing = () => {
                             ].map((stat, i) => (
                                 <div key={stat.label} className="text-left">
                                     <div className="text-lg md:text-xl lg:text-2xl font-display font-semibold text-white/90">{stat.value}</div>
-                                    <div className="text-[9px] md:text-[10px] text-white/30 uppercase tracking-[0.12em] md:tracking-[0.15em] mt-1">{stat.label}</div>
+                                    <div className="text-[9px] md:text-[10px] text-white/30 uppercase tracking-[0.12em] md:tracking-wide mt-1">{stat.label}</div>
                                 </div>
                             ))}
                         </motion.div>
@@ -326,7 +326,7 @@ const Landing = () => {
                             transition={{ duration: 0.5 }}
                         >
                             <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/[0.03] border border-white/[0.08] mb-6 md:mb-8 pointer-events-auto">
-                                <SparklesIcon className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-500" />
+                                <SparklesIcon className="w-3.5 h-3.5 md:w-4 md:h-4 text-indigo-400" />
                                 <span className="text-[10px] md:text-xs font-mono text-white/60 tracking-wider">ADVANCED CAPABILITIES</span>
                             </div>
                             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-semibold mb-3 md:mb-5">

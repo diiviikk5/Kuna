@@ -76,21 +76,21 @@ const ScientistWorkflow = () => {
                 workflowData.data,
                 workflowData.trainingResult.normalizationParams
             );
-            
+
             // Generate ISRO evaluation data
             const data = workflowData.data;
             const seqLen = AI_CONFIG?.sequenceLength || 48;
-            
+
             if (data.length > seqLen + 10) {
                 console.log('🔬 Generating ISRO evaluation data from user data...');
                 const predictions = [];
                 const actuals = [];
                 const numEvalSamples = Math.min(50, data.length - seqLen);
-                
+
                 for (let i = 0; i < numEvalSamples; i++) {
                     const sequence = data.slice(i, i + seqLen);
                     const actualSample = data[i + seqLen];
-                    
+
                     if (sequence.length === seqLen && actualSample) {
                         try {
                             const pred = await predictFuture(sequence);
@@ -113,13 +113,13 @@ const ScientistWorkflow = () => {
                         }
                     }
                 }
-                
+
                 if (predictions.length > 0) {
                     setIsroEvalData({ predictions, actuals });
                     console.log(`✅ ISRO evaluation ready with ${predictions.length} samples`);
                 }
             }
-            
+
             setWorkflowData(prev => ({
                 ...prev,
                 evaluationResults: result
@@ -161,13 +161,13 @@ const ScientistWorkflow = () => {
 
     const ConfigOption = ({ label, value, options, onChange }) => (
         <div>
-            <label className="text-[10px] font-mono font-black text-slate-400 uppercase tracking-widest mb-2 block">
+            <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 block">
                 {label}
             </label>
             <select
                 value={value}
                 onChange={onChange}
-                className="w-full px-4 py-3 bg-slate-950 border-2 border-slate-700 text-white font-mono text-sm font-black uppercase tracking-widest focus:border-amber-500 focus:outline-none"
+                className="w-full px-4 py-3 bg-[#020617] border border-white/[0.08] text-white text-sm font-medium rounded-xl focus:border-indigo-500/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/20 transition-all appearance-none cursor-pointer"
             >
                 {options.map(opt => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -177,7 +177,7 @@ const ScientistWorkflow = () => {
     );
 
     return (
-        <div className="min-h-screen bg-slate-950">
+        <div className="min-h-screen bg-[#020617]">
             <Header
                 title="Scientist Workflow"
                 subtitle="Complete ML Pipeline for GNSS Error Prediction"
@@ -185,30 +185,30 @@ const ScientistWorkflow = () => {
 
             <div className="p-8 max-w-7xl mx-auto">
                 {/* Step Navigation */}
-                <div className="flex border-2 border-slate-800 bg-slate-900 mb-8 overflow-x-auto">
+                <div className="flex bg-[#0f172a]/60 backdrop-blur-xl border border-white/[0.06] rounded-2xl mb-8 overflow-x-auto p-1.5">
                     {steps.map((step, index) => (
                         <button
                             key={step.id}
                             onClick={() => index <= currentStep && setCurrentStep(index)}
                             disabled={index > currentStep}
                             className={`
-                                relative flex items-center gap-3 px-6 py-4 font-mono font-black text-[10px] uppercase tracking-widest
-                                transition-all min-w-[180px]
+                                relative flex items-center gap-3 px-5 py-3 text-[11px] font-semibold uppercase tracking-wider
+                                transition-all min-w-[170px] rounded-xl
                                 ${index === currentStep
-                                    ? 'bg-amber-600 text-black shadow-[4px_4px_0px_#000]'
+                                    ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20'
                                     : index < currentStep
-                                        ? 'text-slate-400 hover:bg-slate-800'
+                                        ? 'text-slate-400 hover:bg-white/[0.06] hover:text-white'
                                         : 'text-slate-600 cursor-not-allowed'
                                 }
                             `}
                         >
-                            <step.icon className="w-4 h-4" />
+                            <step.icon className={`w-4 h-4 ${index === currentStep ? 'text-white' : ''}`} />
                             <div className="flex flex-col items-start">
                                 <span className="leading-none">{step.title}</span>
-                                <span className="text-[8px] font-bold leading-none mt-0.5">{step.subtitle}</span>
+                                <span className={`text-[9px] font-medium leading-none mt-1 ${index === currentStep ? 'text-indigo-200' : 'text-slate-600'}`}>{step.subtitle}</span>
                             </div>
                             {index < steps.length - 1 && (
-                                <ChevronRightIcon className="w-3 h-3 ml-2 text-slate-600" />
+                                <ChevronRightIcon className="w-3 h-3 ml-auto text-slate-700" />
                             )}
                         </button>
                     ))}
@@ -237,10 +237,10 @@ const ScientistWorkflow = () => {
                             exit={{ opacity: 0, x: -20 }}
                             className="space-y-6"
                         >
-                            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
-                                <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest mb-6 flex items-center gap-3">
-                                    <BeakerIcon className="w-5 h-5 text-amber-500" />
-                                    TRAINING_CONFIGURATION
+                            <div className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-8 shadow-lg">
+                                <h3 className="text-sm font-semibold text-white tracking-wide mb-6 flex items-center gap-3">
+                                    <BeakerIcon className="w-5 h-5 text-indigo-400" />
+                                    Training Configuration
                                 </h3>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -305,28 +305,28 @@ const ScientistWorkflow = () => {
 
                                 {/* Data Summary */}
                                 {workflowData.statistics && (
-                                    <div className="bg-slate-950/50 border border-slate-800 p-4">
-                                        <h4 className="text-xs font-mono font-black text-slate-400 uppercase tracking-widest mb-4">
-                                            DATASET_SUMMARY
+                                    <div className="bg-white/[0.03] border border-white/[0.06] p-6 rounded-xl">
+                                        <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">
+                                            Dataset Summary
                                         </h4>
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                             <div>
-                                                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Total Samples</div>
-                                                <div className="text-lg font-mono font-black text-white">{workflowData.statistics.count}</div>
+                                                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Total Samples</div>
+                                                <div className="text-lg font-bold text-white">{workflowData.statistics.count}</div>
                                             </div>
                                             <div>
-                                                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Duration</div>
-                                                <div className="text-lg font-mono font-black text-white">{workflowData.statistics.timeRange.durationDays.toFixed(1)} days</div>
+                                                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Duration</div>
+                                                <div className="text-lg font-bold text-white">{workflowData.statistics.timeRange.durationDays.toFixed(1)} days</div>
                                             </div>
                                             <div>
-                                                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Train Samples</div>
-                                                <div className="text-lg font-mono font-black text-emerald-400">
+                                                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Train Samples</div>
+                                                <div className="text-lg font-bold text-emerald-400">
                                                     {Math.floor(workflowData.statistics.count * (1 - workflowData.config.validationSplit))}
                                                 </div>
                                             </div>
                                             <div>
-                                                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Val Samples</div>
-                                                <div className="text-lg font-mono font-black text-amber-400">
+                                                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Val Samples</div>
+                                                <div className="text-lg font-bold text-amber-400">
                                                     {Math.floor(workflowData.statistics.count * workflowData.config.validationSplit)}
                                                 </div>
                                             </div>
@@ -362,53 +362,54 @@ const ScientistWorkflow = () => {
                             exit={{ opacity: 0, x: -20 }}
                             className="space-y-6"
                         >
-                            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6 text-center">
-                                <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest mb-6 flex items-center justify-center gap-3">
-                                    <ChartBarIcon className="w-5 h-5 text-amber-500" />
-                                    MODEL_EVALUATION_READY
+                            <div className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-10 text-center shadow-lg">
+                                <h3 className="text-base font-semibold text-white mb-4 flex items-center justify-center gap-3">
+                                    <ChartBarIcon className="w-5 h-5 text-indigo-400" />
+                                    Model Evaluation Ready
                                 </h3>
 
-                                <p className="text-sm text-slate-300 mb-6">
+                                <p className="text-sm text-slate-400 mb-8 max-w-md mx-auto leading-relaxed">
                                     Training has been completed. Click below to evaluate the model on test data and generate performance metrics.
                                 </p>
 
                                 <button
                                     onClick={handleEvaluate}
-                                    className="px-8 py-4 bg-amber-600 text-black font-mono font-black text-xs uppercase tracking-[0.2em] border-2 border-amber-500 hover:bg-amber-500 hover:shadow-[4px_4px_0px_#000] transition-all inline-flex items-center gap-3"
+                                    className="px-8 py-3.5 bg-indigo-500 text-white font-semibold text-sm rounded-xl hover:bg-indigo-400 shadow-lg shadow-indigo-500/20 transition-all inline-flex items-center gap-3 active:scale-[0.98]"
                                 >
                                     <ChartBarIcon className="w-5 h-5" />
-                                    EVALUATE_MODEL
+                                    Evaluate Model
                                     <ArrowRightIcon className="w-5 h-5" />
                                 </button>
                             </div>
 
                             {workflowData.trainingResult && (
-                                <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
-                                    <h4 className="text-xs font-mono font-black text-slate-400 uppercase tracking-widest mb-4 border-l-4 border-amber-500 pl-4">
-                                        TRAINING_SUMMARY
+                                <div className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-8 shadow-lg">
+                                    <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-5 flex items-center gap-2">
+                                        <div className="w-1 h-4 bg-indigo-500 rounded-full" />
+                                        Training Summary
                                     </h4>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        <div className="bg-slate-950 border border-slate-800 p-4">
-                                            <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Best Epoch</div>
-                                            <div className="text-xl font-mono font-black text-white">
+                                        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
+                                            <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Best Epoch</div>
+                                            <div className="text-xl font-bold text-white mt-1">
                                                 {workflowData.trainingResult.metrics.bestEpoch}
                                             </div>
                                         </div>
-                                        <div className="bg-slate-950 border border-slate-800 p-4">
-                                            <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Best Loss</div>
-                                            <div className="text-xl font-mono font-black text-emerald-400">
+                                        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
+                                            <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Best Loss</div>
+                                            <div className="text-xl font-bold text-emerald-400 mt-1">
                                                 {workflowData.trainingResult.metrics.bestTrainLoss.toFixed(6)}
                                             </div>
                                         </div>
-                                        <div className="bg-slate-950 border border-slate-800 p-4">
-                                            <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Val Loss</div>
-                                            <div className="text-xl font-mono font-black text-amber-400">
+                                        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
+                                            <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Val Loss</div>
+                                            <div className="text-xl font-bold text-amber-400 mt-1">
                                                 {workflowData.trainingResult.metrics.bestValLoss?.toFixed(6) || 'N/A'}
                                             </div>
                                         </div>
-                                        <div className="bg-slate-950 border border-slate-800 p-4">
-                                            <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Duration</div>
-                                            <div className="text-xl font-mono font-black text-blue-400">
+                                        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
+                                            <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Duration</div>
+                                            <div className="text-xl font-bold text-indigo-400 mt-1">
                                                 {workflowData.trainingResult.metrics.trainingDurationFormatted}
                                             </div>
                                         </div>
@@ -430,17 +431,17 @@ const ScientistWorkflow = () => {
                             {/* ISRO Evaluation Panel */}
                             {isroEvalData && (
                                 <div className="mb-8">
-                                    <h3 className="text-lg font-mono font-black text-white uppercase tracking-widest mb-4 flex items-center gap-3">
-                                        <BeakerIcon className="w-6 h-6 text-amber-500" />
-                                        ISRO EVALUATION METRICS
+                                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
+                                        <BeakerIcon className="w-6 h-6 text-indigo-400" />
+                                        ISRO Evaluation Metrics
                                     </h3>
-                                    <ISROEvaluationPanel 
+                                    <ISROEvaluationPanel
                                         predictions={isroEvalData.predictions}
                                         actuals={isroEvalData.actuals}
                                     />
                                 </div>
                             )}
-                            
+
                             {/* Standard Model Evaluation */}
                             <ModelEvaluation
                                 evaluationResults={workflowData.evaluationResults}
@@ -471,30 +472,30 @@ const ScientistWorkflow = () => {
                 </AnimatePresence>
 
                 {/* Navigation Buttons */}
-                <div className="flex justify-between mt-8 pt-6 border-t-2 border-slate-800">
+                <div className="flex justify-between mt-8 pt-6 border-t border-white/[0.06]">
                     <button
                         onClick={prevStep}
                         disabled={currentStep === 0}
-                        className={`px-6 py-3 font-mono font-black text-xs uppercase tracking-[0.2em] border-2 transition-all flex items-center gap-2
+                        className={`px-5 py-2.5 font-semibold text-sm rounded-xl transition-all flex items-center gap-2
                             ${currentStep === 0
-                                ? 'bg-slate-800 border-slate-700 text-slate-500 cursor-not-allowed'
-                                : 'bg-slate-950 border-slate-700 text-slate-300 hover:bg-slate-800'
+                                ? 'bg-white/[0.03] text-slate-600 cursor-not-allowed border border-white/[0.04]'
+                                : 'bg-white/[0.06] border border-white/[0.08] text-slate-300 hover:bg-white/[0.1] hover:text-white'
                             }`}
                     >
                         <ChevronLeftIcon className="w-4 h-4" />
-                        PREVIOUS
+                        Previous
                     </button>
 
                     <button
                         onClick={nextStep}
                         disabled={!canProceed() || currentStep === 2 || currentStep === 5}
-                        className={`px-6 py-3 font-mono font-black text-xs uppercase tracking-[0.2em] border-2 transition-all flex items-center gap-2
+                        className={`px-5 py-2.5 font-semibold text-sm rounded-xl transition-all flex items-center gap-2
                             ${!canProceed() || currentStep === 2 || currentStep === 5
-                                ? 'bg-slate-800 border-slate-700 text-slate-500 cursor-not-allowed'
-                                : 'bg-amber-600 text-black border-amber-500 hover:bg-amber-500 hover:shadow-[4px_4px_0px_#000]'
+                                ? 'bg-white/[0.03] text-slate-600 cursor-not-allowed border border-white/[0.04]'
+                                : 'bg-indigo-500 text-white hover:bg-indigo-400 shadow-lg shadow-indigo-500/20'
                             }`}
                     >
-                        NEXT
+                        Next
                         <ChevronRightIcon className="w-4 h-4" />
                     </button>
                 </div>

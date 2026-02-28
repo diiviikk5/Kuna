@@ -7,7 +7,12 @@ import {
   ForecastLab,
   Residuals,
   ExportBulletin,
-  ScientistWorkflow
+  ScientistWorkflow,
+  BhuvanConnector,
+  Marketplace,
+  DeveloperSDK,
+  WhatsAppDemo,
+  AgentWorkflows
 } from './pages';
 import { AIAssistant, NotificationToast } from './components';
 
@@ -32,6 +37,11 @@ function App() {
           <Route path="/residuals" element={<Residuals />} />
           <Route path="/export" element={<ExportBulletin />} />
           <Route path="/scientist-workflow" element={<ScientistWorkflow />} />
+          <Route path="/bhuvan" element={<BhuvanConnector />} />
+          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/sdk" element={<DeveloperSDK />} />
+          <Route path="/whatsapp" element={<WhatsAppDemo />} />
+          <Route path="/agents" element={<AgentWorkflows />} />
         </Route>
       </Routes>
     </Router>
@@ -39,4 +49,3 @@ function App() {
 }
 
 export default App;
-

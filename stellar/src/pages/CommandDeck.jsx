@@ -142,15 +142,15 @@ const CommandDeck = () => {
             <div className="p-8 space-y-12 min-h-screen">
                 {/* AI System Status Banner */}
                 <motion.div
-                    className="neo-panel bg-slate-900 border-2 border-slate-700 p-4 flex items-center justify-between"
+                    className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/10 p-5 rounded-2xl flex items-center justify-between shadow-xl"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                 >
                     <div className="flex items-center gap-6">
-                        <div className="bg-slate-950 border-2 border-amber-500/50 text-amber-500 px-4 py-2 font-mono font-black text-sm tracking-widest shadow-[4px_4px_0px_#000]">
+                        <div className="bg-indigo-400/10 border border-amber-500/30 rounded-xl text-indigo-400 px-4 py-2 font-mono font-bold text-sm tracking-wider shadow-inner">
                             SYSTEM_STATUS: {aiReady ? 'OPERATIONAL' : 'INITIALIZING'}
                         </div>
-                        <div className="font-mono text-slate-300 font-bold uppercase tracking-[0.2em] hidden md:block text-[11px] italic">
+                        <div className="font-mono text-slate-300 font-bold uppercase tracking-wider hidden md:block text-[11px] italic">
                             INTEGRATED_ML_FORECASTING_ENGINE // CORE_V1.0.4
                         </div>
                     </div>
@@ -158,9 +158,9 @@ const CommandDeck = () => {
                         <div className="flex flex-col items-end">
                             <div className="flex items-center gap-2">
                                 <div className={`w-2 h-2 rounded-full ${aiReady ? 'bg-emerald-500 animate-pulse outline outline-4 outline-emerald-500/20' : 'bg-slate-600'}`} />
-                                <span className="font-mono font-black text-slate-100 text-sm tracking-wider">{currentTime.toLocaleTimeString('en-US', { hour12: false })}_UTC</span>
+                                <span className="font-semibold text-slate-100 text-sm tracking-wider">{currentTime.toLocaleTimeString('en-US', { hour12: false })}_UTC</span>
                             </div>
-                            <span className="text-[10px] font-mono font-black text-slate-500 uppercase tracking-widest">MISSION_TIME_SYNC</span>
+                            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">MISSION_TIME_SYNC</span>
                         </div>
                     </div>
                 </motion.div>
@@ -169,17 +169,17 @@ const CommandDeck = () => {
                 <div className="max-w-7xl mx-auto space-y-10">
                     <section>
                         <div className="flex items-center gap-6 mb-8">
-                            <h2 className="text-2xl font-mono font-black uppercase tracking-[0.3em] text-white">
-                                <span className="text-amber-500 mr-2">&gt;&gt;</span> ISRO_UPLINK_LIVE
+                            <h2 className="text-2xl font-semibold uppercase tracking-[0.3em] text-white">
+                                <span className="text-indigo-400 mr-2">&gt;&gt;</span> ISRO_UPLINK_LIVE
                             </h2>
                             <div className="flex-1 h-[2px] bg-slate-800" />
                         </div>
 
                         {showHeavyComponents && (
                             <Suspense fallback={
-                                <div className="neo-panel bg-slate-950 p-20 flex flex-col items-center justify-center gap-4">
-                                    <div className="w-12 h-12 border-4 border-slate-800 border-t-amber-500 animate-spin" />
-                                    <span className="font-mono font-black uppercase tracking-widest text-slate-400 text-xs">Linking to Sat_Com_Net...</span>
+                                <div className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-20 flex flex-col items-center justify-center gap-4">
+                                    <div className="w-12 h-12 rounded-full border-4 border-slate-800 border-t-amber-500 animate-spin" />
+                                    <span className="font-mono font-semibold uppercase tracking-wider text-slate-400 text-xs">Linking to Sat_Com_Net...</span>
                                 </div>
                             }>
                                 <div className="shadow-2xl">
@@ -191,33 +191,33 @@ const CommandDeck = () => {
 
                     {/* Mission Evidence & Controls */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div className="neo-panel bg-slate-900 p-8 border-slate-700">
+                        <div className="bg-[#0f172a]/80 backdrop-blur-xl rounded-2xl p-8 border border-white/10 shadow-lg">
                             <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xs font-mono font-black uppercase tracking-widest text-slate-300 border-l-4 border-amber-500 pl-4">Model_Confidence_Index</h3>
-                                <ChartBarIcon className="w-5 h-5 text-slate-600" />
+                                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-300 border-l-2 border-indigo-500/30 pl-3">Model_Confidence_Index</h3>
+                                <ChartBarIcon className="w-5 h-5 text-slate-500" />
                             </div>
-                            <div className="text-7xl font-mono font-black text-white italic">94.8<span className="text-2xl ml-1 text-slate-400">%</span></div>
-                            <div className="mt-6 font-mono text-[11px] text-slate-300 font-bold uppercase tracking-widest leading-relaxed">
+                            <div className="text-7xl font-semibold text-white italic">94.8<span className="text-2xl ml-1 text-slate-400">%</span></div>
+                            <div className="mt-6 font-mono text-[11px] text-slate-300 font-bold uppercase tracking-wider leading-relaxed">
                                 Current prediction reliability based on 7-day look-back temporal validation.
                             </div>
                         </div>
 
-                        <div className="neo-panel bg-slate-950 p-8 border-slate-800">
+                        <div className="bg-[#0f172a]/80 backdrop-blur-xl rounded-2xl p-8 border border-white/10 shadow-lg">
                             <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xs font-mono font-black uppercase tracking-widest text-slate-400 border-l-4 border-slate-700 pl-4">Maneuver_Efficiency_Gain</h3>
-                                <RocketLaunchIcon className="w-5 h-5 text-slate-700" />
+                                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 border-l-2 border-slate-600 pl-3">Maneuver_Efficiency_Gain</h3>
+                                <RocketLaunchIcon className="w-5 h-5 text-slate-500" />
                             </div>
-                            <div className="text-7xl font-mono font-black text-amber-500 italic">-12.4<span className="text-2xl ml-1 text-slate-400">%</span></div>
-                            <div className="mt-6 font-mono text-[11px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
+                            <div className="text-7xl font-semibold text-indigo-400 italic">-12.4<span className="text-2xl ml-1 text-slate-400">%</span></div>
+                            <div className="mt-6 font-mono text-[11px] text-slate-400 font-bold uppercase tracking-wider leading-relaxed">
                                 Projected ΔV fuel consumption reduction using proactive GNSS residual correction.
                             </div>
                         </div>
 
-                        <div className="neo-panel bg-slate-900 border-2 border-amber-500/20 p-8 flex flex-col justify-between group hover:border-amber-500 transition-all">
+                        <div className="bg-gradient-to-br from-[#0f172a]/90 to-slate-900/90 backdrop-blur-xl rounded-2xl border border-amber-500/20 shadow-xl p-8 flex flex-col justify-between group hover:border-amber-500/50 transition-all">
                             <div>
                                 <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-xs font-mono font-black uppercase tracking-widest text-amber-500 italic">SYSTEM_EXECUTOR_NODE</h3>
-                                    <BoltIcon className="w-6 h-6 text-amber-500" />
+                                    <h3 className="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-400/10 px-3 py-1.5 rounded-lg border border-amber-500/20">SYSTEM_EXECUTOR_NODE</h3>
+                                    <BoltIcon className="w-6 h-6 text-indigo-400" />
                                 </div>
                                 <p className="text-[11px] font-mono font-bold text-slate-300 uppercase leading-relaxed mb-6">
                                     Trigger global fleet inference. Executing this will update all satellite state vectors using the STELLAR-v1k ML core.
@@ -228,11 +228,11 @@ const CommandDeck = () => {
                                 onClick={handleRunForecast}
                                 disabled={isRunning || !aiReady}
                                 className={`
-                                    w-full py-5 font-mono font-black text-xs uppercase tracking-[0.2em] transition-all
-                                    flex items-center justify-center gap-3 border-2
+                                    w-full py-4 font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md
+                                    flex items-center justify-center gap-3 border
                                     ${isRunning
-                                        ? 'bg-slate-800 border-slate-700 text-slate-500 cursor-not-allowed'
-                                        : 'bg-amber-600 border-amber-500 text-black hover:bg-amber-500 hover:shadow-[8px_8px_0px_#000] active:translate-x-1 active:translate-y-1 active:shadow-none'
+                                        ? 'bg-slate-800/50 border-white/5 text-slate-500 cursor-not-allowed drop-shadow-none'
+                                        : 'bg-indigo-400 text-slate-950 border-amber-400 hover:bg-amber-400 hover:shadow-lg hover:shadow-amber-500/20 active:scale-95'
                                     }
                                 `}
                             >
@@ -253,7 +253,7 @@ const CommandDeck = () => {
                 </div>
 
                 {/* Global Evidence Strip */}
-                <div className="neo-panel bg-slate-950 border-slate-800 p-2 opacity-80 hover:opacity-100 transition-opacity">
+                <div className="bg-black/40 backdrop-blur-md border border-white/5 rounded-2xl p-3 opacity-80 hover:opacity-100 transition-opacity">
                     <EvidenceStrip
                         validationWindow="EPOCH_7 → EPOCH_8"
                         baselineRMSE="0.428 ns"

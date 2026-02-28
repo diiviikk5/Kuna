@@ -111,10 +111,10 @@ const ModelExporter = ({ model, history, evaluationResults, onModelLoaded }) => 
             disabled={disabled}
             whileHover={{ scale: disabled ? 1 : 1.02 }}
             whileTap={{ scale: disabled ? 1 : 0.98 }}
-            className={`flex items-center gap-3 px-4 py-4 border-2 font-mono font-black text-xs uppercase tracking-[0.2em] transition-all
+            className={`flex items-center gap-3 px-4 py-4 border-2 font-semibold text-xs uppercase tracking-wider transition-all
                 ${disabled 
                     ? 'bg-slate-800 border-slate-700 text-slate-500 cursor-not-allowed' 
-                    : 'bg-slate-950 border-slate-700 text-slate-300 hover:bg-amber-600 hover:text-black hover:border-amber-500 hover:shadow-[4px_4px_0px_#000]'
+                    : 'bg-[#020617] border-slate-700 text-slate-300 hover:bg-indigo-500 hover:text-black hover:border-indigo-500/30 hover:shadow-lg shadow-indigo-500/10'
                 }`}
         >
             <Icon className="w-5 h-5" />
@@ -125,9 +125,9 @@ const ModelExporter = ({ model, history, evaluationResults, onModelLoaded }) => 
     return (
         <div className="space-y-6">
             {/* Model Export */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
-                <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest mb-6 flex items-center gap-3">
-                    <ArrowDownTrayIcon className="w-5 h-5 text-amber-500" />
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6 flex items-center gap-3">
+                    <ArrowDownTrayIcon className="w-5 h-5 text-indigo-400" />
                     MODEL_EXPORT_MODULE
                 </h3>
 
@@ -160,9 +160,9 @@ const ModelExporter = ({ model, history, evaluationResults, onModelLoaded }) => 
             </div>
 
             {/* Model Import */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
-                <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest mb-6 flex items-center gap-3">
-                    <ArrowUpTrayIcon className="w-5 h-5 text-amber-500" />
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6 flex items-center gap-3">
+                    <ArrowUpTrayIcon className="w-5 h-5 text-indigo-400" />
                     MODEL_IMPORT_MODULE
                 </h3>
 
@@ -177,10 +177,10 @@ const ModelExporter = ({ model, history, evaluationResults, onModelLoaded }) => 
                         <motion.div
                             whileHover={{ scale: 1.01 }}
                             whileTap={{ scale: 0.99 }}
-                            className={`h-14 border-2 border-dashed flex items-center justify-center cursor-pointer font-mono font-black text-xs uppercase tracking-[0.2em] transition-all
+                            className={`h-14 border-2 border-dashed flex items-center justify-center cursor-pointer font-semibold text-xs uppercase tracking-wider transition-all
                                 ${uploadStatus === 'loading'
-                                    ? 'border-amber-500 bg-amber-500/5 text-amber-500'
-                                    : 'border-slate-700 bg-slate-950 text-slate-300 hover:border-amber-500 hover:bg-amber-500/5'
+                                    ? 'border-indigo-500/30 bg-indigo-400/5 text-indigo-400'
+                                    : 'border-slate-700 bg-[#020617] text-slate-300 hover:border-indigo-500/30 hover:bg-indigo-400/5'
                                 }`}
                         >
                             {uploadStatus === 'loading' && (
@@ -204,16 +204,16 @@ const ModelExporter = ({ model, history, evaluationResults, onModelLoaded }) => 
             </div>
 
             {/* Saved Models */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
-                <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest mb-6 flex items-center gap-3">
-                    <DocumentTextIcon className="w-5 h-5 text-amber-500" />
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6 flex items-center gap-3">
+                    <DocumentTextIcon className="w-5 h-5 text-indigo-400" />
                     SAVED_MODELS ({savedModels.length})
                 </h3>
 
                 {savedModels.length === 0 ? (
                     <div className="text-center py-12">
                         <CubeIcon className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                        <p className="text-sm font-mono text-slate-500 uppercase tracking-widest">
+                        <p className="text-sm font-mono text-slate-500 uppercase tracking-wider">
                             No saved models found
                         </p>
                     </div>
@@ -225,11 +225,11 @@ const ModelExporter = ({ model, history, evaluationResults, onModelLoaded }) => 
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.1 }}
-                                className="bg-slate-950 border-2 border-slate-800 p-4 hover:border-amber-500/50 transition-all"
+                                className="bg-[#020617] border border-white/[0.06] p-4 hover:border-amber-500/50 transition-all"
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
-                                        <div className="text-sm font-mono font-black text-white mb-1">
+                                        <div className="text-sm font-semibold text-white mb-1">
                                             {savedModel.modelName || `Model #${savedModel.id.slice(-4)}`}
                                         </div>
                                         <div className="flex gap-4 text-[10px] font-mono text-slate-400">
@@ -240,7 +240,7 @@ const ModelExporter = ({ model, history, evaluationResults, onModelLoaded }) => 
                                     </div>
                                     <button
                                         onClick={() => handleDeleteModel(savedModel.id)}
-                                        className="px-3 py-1 bg-rose-600/10 border border-rose-600/50 text-rose-500 hover:bg-rose-600 hover:text-white transition-all font-mono text-[10px] font-black uppercase"
+                                        className="px-3 py-1 bg-rose-600/10 border border-rose-600/50 text-rose-500 hover:bg-rose-600 hover:text-white transition-all font-mono text-[10px] font-bold uppercase"
                                     >
                                         <TrashIcon className="w-4 h-4" />
                                     </button>

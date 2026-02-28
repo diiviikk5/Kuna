@@ -142,40 +142,40 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
         <div className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Control Panel */}
-                <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6 flex flex-col justify-between">
+                <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-                                <CpuChipIcon className="w-6 h-6 text-amber-500" />
+                            <div className="w-10 h-10 bg-indigo-400/10 border border-amber-500/30 flex items-center justify-center">
+                                <CpuChipIcon className="w-6 h-6 text-indigo-400" />
                             </div>
                             <div>
-                                <h3 className="text-xs font-mono font-black text-white uppercase tracking-widest">ML_TRAINING_CONTROLLER</h3>
+                                <h3 className="text-xs font-semibold text-white uppercase tracking-wider">ML_TRAINING_CONTROLLER</h3>
                                 <p className="text-[10px] font-mono font-bold text-slate-500">TF.JS_ENGINE // {orbitType}_ORBIT</p>
                             </div>
                         </div>
 
                         <div className="space-y-4 mb-8">
                             <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                                <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Status</span>
-                                <span className={`text-[10px] font-mono font-black uppercase ${status === 'TRAINING_ACTIVE' ? 'text-emerald-500 animate-pulse' :
+                                <span className="text-[10px] font-semibold text-slate-400 uppercase">Status</span>
+                                <span className={`text-[10px] font-semibold uppercase ${status === 'TRAINING_ACTIVE' ? 'text-emerald-500 animate-pulse' :
                                         status === 'ERROR' ? 'text-rose-500' : 'text-slate-300'
                                     }`}>{status}</span>
                             </div>
                             <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                                <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Backend</span>
-                                <span className="text-[10px] font-mono font-black text-slate-300 uppercase">{aiInfo?.tfBackend || 'WASM/WEBGL'}</span>
+                                <span className="text-[10px] font-semibold text-slate-400 uppercase">Backend</span>
+                                <span className="text-[10px] font-semibold text-slate-300 uppercase">{aiInfo?.tfBackend || 'WASM/WEBGL'}</span>
                             </div>
                             <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                                <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Target_Epochs</span>
-                                <span className="text-[10px] font-mono font-black text-slate-300 uppercase">{totalEpochs}_ITERATIONS</span>
+                                <span className="text-[10px] font-semibold text-slate-400 uppercase">Target_Epochs</span>
+                                <span className="text-[10px] font-semibold text-slate-300 uppercase">{totalEpochs}_ITERATIONS</span>
                             </div>
                             <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                                <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Validation_Split</span>
-                                <span className="text-[10px] font-mono font-black text-amber-500 uppercase">20%</span>
+                                <span className="text-[10px] font-semibold text-slate-400 uppercase">Validation_Split</span>
+                                <span className="text-[10px] font-semibold text-indigo-400 uppercase">20%</span>
                             </div>
                             <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                                <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Early_Stopping</span>
-                                <span className="text-[10px] font-mono font-black text-emerald-500 uppercase">ENABLED</span>
+                                <span className="text-[10px] font-semibold text-slate-400 uppercase">Early_Stopping</span>
+                                <span className="text-[10px] font-semibold text-emerald-500 uppercase">ENABLED</span>
                             </div>
                         </div>
                     </div>
@@ -183,9 +183,9 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                     <button
                         onClick={startTraining}
                         disabled={isTraining}
-                        className={`w-full py-4 font-mono font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 border-2 ${isTraining
+                        className={`w-full py-4 font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-3 border-2 ${isTraining
                                 ? 'bg-slate-800 border-slate-700 text-slate-500 cursor-not-allowed'
-                                : 'bg-amber-600 border-amber-500 text-black hover:bg-amber-500 hover:shadow-[4px_4px_0px_#000]'
+                                : 'bg-indigo-500 border-indigo-500/30 text-black hover:bg-indigo-400 hover:shadow-lg shadow-indigo-500/10'
                             }`}
                     >
                         {isTraining ? (
@@ -203,15 +203,15 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                 </div>
 
                 {/* Progress Visualization */}
-                <div className="lg:col-span-2 neo-panel bg-slate-950 border-2 border-slate-800 p-6 min-h-[300px] flex flex-col">
+                <div className="lg:col-span-2 neo-panel bg-[#020617] border border-white/[0.06] p-6 min-h-[300px] flex flex-col">
                     <div className="flex items-center justify-between mb-6">
-                        <span className="text-[10px] font-mono font-black text-slate-500 uppercase tracking-widest italic flex items-center gap-2">
+                        <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider italic flex items-center gap-2">
                             <ChartBarIcon className="w-4 h-4 text-emerald-500" /> LOSS_CONVERGENCE_MATRICES
                         </span>
                         {isTraining && (
                             <div className="flex items-center gap-4">
                                 <span className="text-[10px] font-mono font-bold text-emerald-500">TRAIN_LOSS: {progress.length > 0 ? progress[progress.length - 1].loss.toFixed(4) : 'N/A'}</span>
-                                <span className="text-[10px] font-mono font-bold text-amber-500">VAL_LOSS: {valProgress.length > 0 ? valProgress[valProgress.length - 1].loss.toFixed(4) : 'N/A'}</span>
+                                <span className="text-[10px] font-mono font-bold text-indigo-400">VAL_LOSS: {valProgress.length > 0 ? valProgress[valProgress.length - 1].loss.toFixed(4) : 'N/A'}</span>
                                 <span className="text-[10px] font-mono font-bold text-white animate-pulse">EPOCH: {currentEpoch}/{totalEpochs}</span>
                             </div>
                         )}
@@ -222,7 +222,7 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                             {progress.length === 0 && !isTraining && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-700 font-mono">
                                     <SparklesIcon className="w-8 h-8 mb-2 opacity-20" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest">Awaiting execution...</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-wider">Awaiting execution...</span>
                                     <span className="text-[8px] text-slate-800 mt-2">Will train for {totalEpochs} epochs with 20% validation</span>
                                 </div>
                             )}
@@ -237,7 +237,7 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                                 animate={{ height: `${Math.min(100, (1 / (p.loss + 0.01)) * 5)}%` }}
                                 style={{ maxHeight: '100%', minWidth: '2px' }}
                             >
-                                <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] font-mono font-black text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] font-semibold text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                                     T: {p.loss.toFixed(4)}
                                 </div>
                             </motion.div>
@@ -248,7 +248,7 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                             {valProgress.map((p, i) => (
                                 <motion.div
                                     key={`val-${i}`}
-                                    className="flex-1 bg-amber-500/60 border-t-2 border-amber-400"
+                                    className="flex-1 bg-indigo-400/60 border-t-2 border-amber-400"
                                     initial={{ height: 0 }}
                                     animate={{ height: `${Math.min(100, (1 / (p.loss + 0.01)) * 5)}%` }}
                                     style={{ maxHeight: '100%', minWidth: '2px' }}
@@ -257,14 +257,14 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                         </div>
                     </div>
 
-                    <div className="flex justify-between mt-2 px-4 text-[8px] font-mono font-black text-slate-600">
+                    <div className="flex justify-between mt-2 px-4 text-[8px] font-semibold text-slate-600">
                         <div className="flex gap-4">
                             <div className="flex items-center gap-1">
                                 <div className="w-2 h-2 bg-emerald-500"></div>
                                 <span>TRAIN</span>
                             </div>
                             <div className="flex items-center gap-1">
-                                <div className="w-2 h-2 bg-amber-500"></div>
+                                <div className="w-2 h-2 bg-indigo-400"></div>
                                 <span>VALIDATION</span>
                             </div>
                         </div>
@@ -278,12 +278,12 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                 {[
                     { label: 'Params', val: '12.4M', color: 'text-white' },
                     { label: 'Layer_Depth', val: '24_OPS', color: 'text-slate-300' },
-                    { label: 'Optimizer', val: 'ADAM_W', color: 'text-amber-500' },
+                    { label: 'Optimizer', val: 'ADAM_W', color: 'text-indigo-400' },
                     { label: 'Quantization', val: 'INT8_ENABLED', color: 'text-emerald-500' }
                 ].map((item, i) => (
-                    <div key={i} className="neo-panel bg-slate-900/50 border-slate-800 p-4">
-                        <div className="text-[9px] font-mono font-black text-slate-500 uppercase tracking-widest mb-1">{item.label}</div>
-                        <div className={`text-xl font-mono font-black ${item.color}`}>{item.val}</div>
+                    <div key={i} className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl/50 border-slate-800 p-4">
+                        <div className="text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-1">{item.label}</div>
+                        <div className={`text-xl font-semibold ${item.color}`}>{item.val}</div>
                     </div>
                 ))}
             </div>
@@ -300,7 +300,7 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                             <SparklesIcon className="w-6 h-6 text-emerald-500" />
                         </div>
                         <div>
-                            <h3 className="text-sm font-mono font-black text-emerald-400 uppercase tracking-widest">TRAINING_COMPLETE</h3>
+                            <h3 className="text-sm font-semibold text-emerald-400 uppercase tracking-wider">TRAINING_COMPLETE</h3>
                             <p className="text-[10px] font-mono font-bold text-slate-500">Model ready for predictions</p>
                         </div>
                     </div>
@@ -308,8 +308,8 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {/* Final Validation Loss */}
                         <div>
-                            <div className="text-[10px] font-mono font-black text-slate-400 uppercase mb-2">VALIDATION_LOSS</div>
-                            <div className="text-3xl font-mono font-black text-emerald-400">
+                            <div className="text-[10px] font-semibold text-slate-400 uppercase mb-2">VALIDATION_LOSS</div>
+                            <div className="text-3xl font-semibold text-emerald-400">
                                 {finalMetrics.valLoss.toFixed(5)}
                             </div>
                             <div className="text-[9px] font-mono text-slate-500 mt-1">
@@ -319,8 +319,8 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
 
                         {/* RMSE */}
                         <div>
-                            <div className="text-[10px] font-mono font-black text-slate-400 uppercase mb-2">VAL_RMSE</div>
-                            <div className="text-3xl font-mono font-black text-amber-400">
+                            <div className="text-[10px] font-semibold text-slate-400 uppercase mb-2">VAL_RMSE</div>
+                            <div className="text-3xl font-semibold text-amber-400">
                                 {finalMetrics.valRMSE.toFixed(4)}
                             </div>
                             <div className="text-[9px] font-mono text-slate-500 mt-1">
@@ -330,8 +330,8 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
 
                         {/* Improvement */}
                         <div>
-                            <div className="text-[10px] font-mono font-black text-slate-400 uppercase mb-2">IMPROVEMENT</div>
-                            <div className="text-3xl font-mono font-black text-cyan-400">
+                            <div className="text-[10px] font-semibold text-slate-400 uppercase mb-2">IMPROVEMENT</div>
+                            <div className="text-3xl font-semibold text-cyan-400">
                                 {finalMetrics.improvement}%
                             </div>
                             <div className="text-[9px] font-mono text-slate-500 mt-1">
@@ -341,8 +341,8 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
 
                         {/* Epochs Completed */}
                         <div>
-                            <div className="text-[10px] font-mono font-black text-slate-400 uppercase mb-2">EPOCHS</div>
-                            <div className="text-3xl font-mono font-black text-white">
+                            <div className="text-[10px] font-semibold text-slate-400 uppercase mb-2">EPOCHS</div>
+                            <div className="text-3xl font-semibold text-white">
                                 {finalMetrics.epochs}
                             </div>
                             <div className="text-[9px] font-mono text-slate-500 mt-1">
@@ -353,7 +353,7 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
 
                     {/* What This Means */}
                     <div className="mt-6 pt-6 border-t border-emerald-800/30">
-                        <div className="text-[10px] font-mono font-black text-emerald-400 uppercase mb-3">📊 WHAT THIS MEANS:</div>
+                        <div className="text-[10px] font-semibold text-emerald-400 uppercase mb-3">📊 WHAT THIS MEANS:</div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[11px] font-mono text-slate-300">
                             <div className="flex gap-2">
                                 <span className="text-emerald-500">✓</span>
@@ -376,7 +376,7 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
 
                     {/* Next Steps */}
                     <div className="mt-6 p-4 bg-slate-950/50 border border-slate-800 rounded">
-                        <div className="text-[10px] font-mono font-black text-amber-400 uppercase mb-2">🚀 NEXT STEPS:</div>
+                        <div className="text-[10px] font-semibold text-amber-400 uppercase mb-2">🚀 NEXT STEPS:</div>
                         <div className="text-[11px] font-mono text-slate-400 space-y-1">
                             <div>1. Go to <strong className="text-white">/satellite-console</strong> to see live predictions</div>
                             <div>2. Select a satellite and view 8 different forecast horizons</div>
@@ -390,7 +390,7 @@ const ModelTrainer = ({ orbitType = 'GEO', onEvaluationReady }) => {
                 <div className="bg-rose-900/10 border-2 border-rose-900/50 p-4 flex items-center gap-4">
                     <ExclamationTriangleIcon className="w-6 h-6 text-rose-500" />
                     <div>
-                        <h4 className="text-xs font-mono font-black text-rose-500 uppercase tracking-widest">EXECUTION_FAILURE</h4>
+                        <h4 className="text-xs font-semibold text-rose-500 uppercase tracking-wider">EXECUTION_FAILURE</h4>
                         <p className="text-[10px] font-bold text-rose-900 uppercase">{error}</p>
                     </div>
                 </div>

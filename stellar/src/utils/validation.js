@@ -40,11 +40,18 @@ export async function validateCSV(file) {
 
     const header = lines[0].split(',').map(h => h.trim());
     const requiredColumns = ['utc_time', 'x_error', 'y_error', 'z_error', 'satclockerror'];
-    const foundColumns = header.map(col => col.toLowerCase().replace(/[\s()]+/g, '_').replace('error', '_error'));
 
-    const missingColumns = requiredColumns.filter(col => 
-        !foundColumns.some(fc => fc.includes(col) || col.includes(fc.replace('_error', '')))
-    );
+    // Normalize: lowercase, strip units like (m), collapse whitespace/underscores
+    const normalize = (s) => s.toLowerCase().replace(/\s*\([^)]*\)\s*/g, '').replace(/[\s_]+/g, '').trim();
+    const foundNormalized = header.map(normalize);
+
+    const missingColumns = requiredColumns.filter(col => {
+        const normCol = normalize(col);
+        return !foundNormalized.some(fc =>
+            fc === normCol ||
+            fc.replace('error', '') === normCol.replace('error', '')
+        );
+    });
 
     if (missingColumns.length > 0) {
         errors.push(`Missing required columns: ${missingColumns.join(', ')}`);
@@ -89,7 +96,7 @@ export async function validateCSV(file) {
 export function parseCSVData(csvText) {
     const lines = csvText.trim().split('\n');
     const header = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[\s()]+/g, '_').replace('error', '_error'));
-    
+
     const data = [];
     const parseErrors = [];
 
@@ -98,7 +105,7 @@ export function parseCSVData(csvText) {
         if (!line) continue;
 
         const values = line.split(',').map(v => v.trim());
-        
+
         if (values.length < 5) {
             parseErrors.push({ row: i + 1, error: 'Insufficient columns' });
             continue;
@@ -155,7 +162,7 @@ function parseTimestamp(dateStr) {
         if (match) {
             const [_, a, b, c, d, e] = match;
             const nums = match.slice(1).map(Number);
-            
+
             if (nums[0] > 1000) {
                 return new Date(nums[0], nums[1] - 1, nums[2], nums[3], nums[4]).getTime();
             } else {
@@ -209,17 +216,17 @@ function calculateFeatureStats(values) {
     const n = values.length;
     const mean = values.reduce((a, b) => a + b, 0) / n;
     const sorted = [...values].sort((a, b) => a - b);
-    const median = n % 2 === 0 ? (sorted[n/2 - 1] + sorted[n/2]) / 2 : sorted[Math.floor(n/2)];
-    
+    const median = n % 2 === 0 ? (sorted[n / 2 - 1] + sorted[n / 2]) / 2 : sorted[Math.floor(n / 2)];
+
     const variance = values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / n;
     const std = Math.sqrt(variance);
-    
+
     const q1 = sorted[Math.floor(n * 0.25)];
     const q3 = sorted[Math.floor(n * 0.75)];
     const iqr = q3 - q1;
-    
+
     const outliers = values.filter(v => v < q1 - 1.5 * iqr || v > q3 + 1.5 * iqr);
-    
+
     return {
         mean,
         median,
@@ -248,7 +255,7 @@ function detectAnomalies(data, stats) {
     data.forEach((point, i) => {
         let score = 0;
         const features = ['radial', 'along', 'cross', 'clock'];
-        
+
         features.forEach(feature => {
             const zScore = Math.abs((point[feature] - stats[feature].mean) / stats[feature].std);
             if (zScore > threshold) {
@@ -277,8 +284,8 @@ function detectAnomalies(data, stats) {
  * @returns {Object} Quality assessment
  */
 function assessDataQuality(data, stats) {
-    const totalOutliers = stats.radial.outlierCount + stats.along.outlierCount + 
-                          stats.cross.outlierCount + stats.clock.outlierCount;
+    const totalOutliers = stats.radial.outlierCount + stats.along.outlierCount +
+        stats.cross.outlierCount + stats.clock.outlierCount;
     const outlierRate = totalOutliers / (data.length * 4);
 
     let quality = 'EXCELLENT';
@@ -295,8 +302,8 @@ function assessDataQuality(data, stats) {
         score -= 10;
     }
 
-    const hasHighVariance = Object.values(stats).some(s => 
-        s.std && typeof s === 'object' && s.std !== undefined && 
+    const hasHighVariance = Object.values(stats).some(s =>
+        s.std && typeof s === 'object' && s.std !== undefined &&
         s.std / (Math.abs(s.mean) + 1) > 5
     );
 

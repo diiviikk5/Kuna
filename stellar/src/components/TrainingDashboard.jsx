@@ -87,6 +87,9 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
         addLog(`Dataset: ${data.length} samples | Epochs: ${epochs} | Batch: ${batchSize} | LR: ${learningRate}`, 'config');
 
         try {
+            let completedMetrics = null;
+            let completedHistory = null;
+
             const result = await trainWithConfig(data, config, {
                 onEpochEnd: (epoch, logs, metrics) => {
                     setHistory(prev => ({
@@ -109,23 +112,26 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
                     setProgress(progressData.progress);
                 },
                 onComplete: (metrics, fullHistory) => {
+                    completedMetrics = metrics;
+                    completedHistory = fullHistory;
                     addLog('Training completed successfully!', 'success');
                     addLog(`Best Training Loss: ${metrics.bestTrainLoss.toFixed(6)}`, 'info');
                     addLog(`Best Validation Loss: ${metrics.bestValLoss?.toFixed(6) || 'N/A'}`, 'info');
                     addLog(`Training Duration: ${metrics.trainingDurationFormatted}`, 'info');
-
-                    if (onTrainingComplete) {
-                        onTrainingComplete({
-                            success: true,
-                            history: fullHistory,
-                            metrics,
-                            normalizationParams: result.normalizationParams
-                        });
-                    }
                 }
             });
 
             setIsTraining(false);
+
+            // Now `result` is available — call onTrainingComplete with normalization params
+            if (onTrainingComplete && completedMetrics) {
+                onTrainingComplete({
+                    success: true,
+                    history: completedHistory,
+                    metrics: completedMetrics,
+                    normalizationParams: result?.normalizationParams || null
+                });
+            }
 
         } catch (error) {
             addLog(`Training error: ${error.message}`, 'error');
@@ -173,40 +179,40 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
         <div className="space-y-6">
             {/* Control Panel */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                <div className="lg:col-span-1 neo-panel bg-slate-900 border-2 border-slate-700 p-6">
+                <div className="lg:col-span-1 neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-                            <CpuChipIcon className="w-6 h-6 text-amber-500" />
+                        <div className="w-10 h-10 bg-indigo-400/10 border border-amber-500/30 flex items-center justify-center">
+                            <CpuChipIcon className="w-6 h-6 text-indigo-400" />
                         </div>
                         <div>
-                            <h3 className="text-xs font-mono font-black text-white uppercase tracking-widest">TRAINING_CORE</h3>
+                            <h3 className="text-xs font-semibold text-white uppercase tracking-wider">TRAINING_CORE</h3>
                             <p className="text-[10px] font-mono text-slate-500">{isTraining ? 'ACTIVE' : 'IDLE'}</p>
                         </div>
                     </div>
 
                     <div className="space-y-4 mb-6">
                         <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                            <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Epochs</span>
-                            <span className="text-[10px] font-mono font-black text-white">{currentEpoch}/{epochs}</span>
+                            <span className="text-[10px] font-semibold text-slate-400 uppercase">Epochs</span>
+                            <span className="text-[10px] font-semibold text-white">{currentEpoch}/{epochs}</span>
                         </div>
                         <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                            <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Batch</span>
-                            <span className="text-[10px] font-mono font-black text-white">{batchSize}</span>
+                            <span className="text-[10px] font-semibold text-slate-400 uppercase">Batch</span>
+                            <span className="text-[10px] font-semibold text-white">{batchSize}</span>
                         </div>
                         <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                            <span className="text-[10px] font-mono font-black text-slate-400 uppercase">LR</span>
-                            <span className="text-[10px] font-mono font-black text-white">{learningRate}</span>
+                            <span className="text-[10px] font-semibold text-slate-400 uppercase">LR</span>
+                            <span className="text-[10px] font-semibold text-white">{learningRate}</span>
                         </div>
                         <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                            <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Val_Split</span>
-                            <span className="text-[10px] font-mono font-black text-white">{(validationSplit * 100).toFixed(0)}%</span>
+                            <span className="text-[10px] font-semibold text-slate-400 uppercase">Val_Split</span>
+                            <span className="text-[10px] font-semibold text-white">{(validationSplit * 100).toFixed(0)}%</span>
                         </div>
                     </div>
 
                     {!isTraining ? (
                         <button
                             onClick={startTraining}
-                            className="w-full py-4 bg-amber-600 text-black font-mono font-black text-xs uppercase tracking-[0.2em] border-2 border-amber-500 hover:bg-amber-500 hover:shadow-[4px_4px_0px_#000] transition-all flex items-center justify-center gap-2"
+                            className="w-full py-4 bg-indigo-500 text-black font-semibold text-xs uppercase tracking-wider border border-indigo-500/30 hover:bg-indigo-400 hover:shadow-lg shadow-indigo-500/10 transition-all flex items-center justify-center gap-2"
                         >
                             <PlayIcon className="w-4 h-4" />
                             INITIATE_TRAINING
@@ -214,7 +220,7 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
                     ) : (
                         <button
                             onClick={stopTraining}
-                            className="w-full py-4 bg-rose-600 text-white font-mono font-black text-xs uppercase tracking-[0.2em] border-2 border-rose-500 hover:bg-rose-500 transition-all flex items-center justify-center gap-2"
+                            className="w-full py-4 bg-rose-600 text-white font-semibold text-xs uppercase tracking-wider border-2 border-rose-500 hover:bg-rose-500 transition-all flex items-center justify-center gap-2"
                         >
                             <StopIcon className="w-4 h-4" />
                             HALT_EXECUTION
@@ -224,39 +230,39 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
 
                 {/* Metrics Cards */}
                 <div className="lg:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="neo-panel bg-slate-950 border-slate-800 p-4">
+                    <div className="neo-panel bg-[#020617] border-slate-800 p-4">
                         <div className="flex items-center gap-2 mb-2">
                             <ClockIcon className="w-4 h-4 text-blue-400" />
-                            <span className="text-[9px] font-mono font-black text-slate-500 uppercase">ELAPSED</span>
+                            <span className="text-[9px] font-semibold text-slate-500 uppercase">ELAPSED</span>
                         </div>
-                        <div className="text-2xl font-mono font-black text-white">
+                        <div className="text-2xl font-semibold text-white">
                             {formatTime(trainingTime)}
                         </div>
                     </div>
-                    <div className="neo-panel bg-slate-950 border-slate-800 p-4">
+                    <div className="neo-panel bg-[#020617] border-slate-800 p-4">
                         <div className="flex items-center gap-2 mb-2">
                             <ChartBarIcon className="w-4 h-4 text-emerald-400" />
-                            <span className="text-[9px] font-mono font-black text-slate-500 uppercase">TRAIN_LOSS</span>
+                            <span className="text-[9px] font-semibold text-slate-500 uppercase">TRAIN_LOSS</span>
                         </div>
-                        <div className="text-2xl font-mono font-black text-emerald-400">
+                        <div className="text-2xl font-semibold text-emerald-400">
                             {history.trainLoss.length > 0 ? formatMetric(history.trainLoss[history.trainLoss.length - 1]) : '-'}
                         </div>
                     </div>
-                    <div className="neo-panel bg-slate-950 border-slate-800 p-4">
+                    <div className="neo-panel bg-[#020617] border-slate-800 p-4">
                         <div className="flex items-center gap-2 mb-2">
                             <ChartBarIcon className="w-4 h-4 text-amber-400" />
-                            <span className="text-[9px] font-mono font-black text-slate-500 uppercase">VAL_LOSS</span>
+                            <span className="text-[9px] font-semibold text-slate-500 uppercase">VAL_LOSS</span>
                         </div>
-                        <div className="text-2xl font-mono font-black text-amber-400">
+                        <div className="text-2xl font-semibold text-amber-400">
                             {history.valLoss.length > 0 ? formatMetric(history.valLoss[history.valLoss.length - 1]) : '-'}
                         </div>
                     </div>
-                    <div className="neo-panel bg-slate-950 border-slate-800 p-4">
+                    <div className="neo-panel bg-[#020617] border-slate-800 p-4">
                         <div className="flex items-center gap-2 mb-2">
                             <BoltIcon className="w-4 h-4 text-rose-400" />
-                            <span className="text-[9px] font-mono font-black text-slate-500 uppercase">PROGRESS</span>
+                            <span className="text-[9px] font-semibold text-slate-500 uppercase">PROGRESS</span>
                         </div>
-                        <div className="text-2xl font-mono font-black text-rose-400">
+                        <div className="text-2xl font-semibold text-rose-400">
                             {progress.toFixed(1)}%
                         </div>
                     </div>
@@ -264,10 +270,10 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
             </div>
 
             {/* Loss Chart */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest flex items-center gap-3">
-                        <ChartBarIcon className="w-5 h-5 text-amber-500" />
+                    <h3 className="text-sm font-semibold text-white uppercase tracking-wider flex items-center gap-3">
+                        <ChartBarIcon className="w-5 h-5 text-indigo-400" />
                         LOSS_CONVERGENCE_METRICS
                     </h3>
                     {isTraining && (
@@ -302,7 +308,7 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
                             />
                             <Legend
                                 wrapperStyle={{ paddingTop: 20 }}
-                                formatter={(value) => <span className="text-slate-300 text-[11px] font-black font-mono tracking-[0.2em]">{value}</span>}
+                                formatter={(value) => <span className="text-slate-300 text-[11px] font-bold font-mono tracking-wider">{value}</span>}
                             />
                             <Line
                                 type="monotone"
@@ -327,12 +333,12 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
 
             {/* Progress Bar */}
             {isTraining && (
-                <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-4">
+                <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-4">
                     <div className="flex justify-between items-center mb-2">
-                        <span className="text-[10px] font-mono font-black text-slate-400 uppercase">Training Progress</span>
-                        <span className="text-[10px] font-mono font-black text-emerald-500">{progress.toFixed(1)}%</span>
+                        <span className="text-[10px] font-semibold text-slate-400 uppercase">Training Progress</span>
+                        <span className="text-[10px] font-semibold text-emerald-500">{progress.toFixed(1)}%</span>
                     </div>
-                    <div className="h-3 bg-slate-950 border border-slate-700 overflow-hidden">
+                    <div className="h-3 bg-[#020617] border border-slate-700 overflow-hidden">
                         <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${progress}%` }}
@@ -349,21 +355,21 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
             )}
 
             {/* Training Logs */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest flex items-center gap-3">
-                        <BeakerIcon className="w-5 h-5 text-amber-500" />
+                    <h3 className="text-sm font-semibold text-white uppercase tracking-wider flex items-center gap-3">
+                        <BeakerIcon className="w-5 h-5 text-indigo-400" />
                         SYSTEM_LOGS
                     </h3>
                     <button
                         onClick={clearLogs}
-                        className="px-3 py-1 bg-slate-950 border border-slate-700 text-[10px] font-mono font-black text-slate-400 uppercase hover:bg-slate-800 transition-colors"
+                        className="px-3 py-1 bg-[#020617] border border-slate-700 text-[10px] font-semibold text-slate-400 uppercase hover:bg-slate-800 transition-colors"
                     >
                         CLEAR
                     </button>
                 </div>
 
-                <div className="bg-slate-950 border border-slate-800 h-64 overflow-y-auto custom-scrollbar p-4 font-mono">
+                <div className="bg-[#020617] border border-slate-800 h-64 overflow-y-auto custom-scrollbar p-4 font-mono">
                     <AnimatePresence>
                         {logs.length === 0 ? (
                             <motion.div
@@ -371,7 +377,7 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
                                 animate={{ opacity: 1 }}
                                 className="h-full flex items-center justify-center text-slate-700"
                             >
-                                <span className="text-[11px] font-black uppercase tracking-widest">Awaiting training initialization...</span>
+                                <span className="text-[11px] font-bold uppercase tracking-wider">Awaiting training initialization...</span>
                             </motion.div>
                         ) : (
                             logs.map((log, i) => (
@@ -382,7 +388,7 @@ const TrainingDashboard = ({ data, config, onTrainingComplete }) => {
                                     className={`text-[11px] py-1 ${getLogColor(log.type)}`}
                                 >
                                     <span className="text-slate-600 mr-2">[{log.timestamp}]</span>
-                                    <span className={log.type === 'epoch' ? 'font-black' : ''}>{log.message}</span>
+                                    <span className={log.type === 'epoch' ? 'font-bold' : ''}>{log.message}</span>
                                 </motion.div>
                             ))
                         )}

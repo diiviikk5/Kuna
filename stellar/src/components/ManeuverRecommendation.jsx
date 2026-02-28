@@ -87,7 +87,7 @@ const ManeuverRecommendation = ({ prediction, satellite, threshold = 5.0 }) => {
 
     const urgencyColors = {
         CRITICAL: 'bg-red-500 text-white',
-        WARNING: 'bg-amber-500 text-black',
+        WARNING: 'bg-indigo-400 text-black',
         NOMINAL: 'bg-emerald-400 text-black'
     };
 
@@ -104,36 +104,36 @@ const ManeuverRecommendation = ({ prediction, satellite, threshold = 5.0 }) => {
                         <RocketLaunchIcon className="w-8 h-8" />
                     </div>
                     <div>
-                        <h3 className="font-black text-2xl uppercase tracking-tighter italic">MANEUVER_ADVISORY</h3>
-                        <p className="text-sm font-mono font-black opacity-80 uppercase">
+                        <h3 className="font-bold text-2xl uppercase tracking-tighter italic">MANEUVER_ADVISORY</h3>
+                        <p className="text-sm font-semibold opacity-80 uppercase">
                             {satellite?.name || 'SATELLITE'} // STATION_KEEPING
                         </p>
                     </div>
                 </div>
 
-                <div className="bg-black text-white px-4 py-2 font-black text-xl italic border-4 border-white">
+                <div className="bg-black text-white px-4 py-2 font-bold text-xl italic border-4 border-white">
                     {maneuver.urgency}
                 </div>
             </div>
 
             {/* Error Summary */}
             <div className="p-6 grid grid-cols-2 gap-6 bg-slate-50 border-b-4 border-black">
-                <div className="bg-white border-4 border-black p-4 shadow-[4px_4px_0px_#000]">
-                    <div className="text-xs font-black font-mono text-slate-500 uppercase mb-2">POSITION_ERROR_RMS</div>
-                    <div className={`text-4xl font-black font-mono ${maneuver.positionError > threshold ? 'text-red-500' : 'text-black'}`}>
+                <div className="bg-white border-4 border-black p-4 shadow-lg shadow-indigo-500/10">
+                    <div className="text-xs font-bold font-mono text-slate-500 uppercase mb-2">POSITION_ERROR_RMS</div>
+                    <div className={`text-4xl font-bold font-mono ${maneuver.positionError > threshold ? 'text-red-500' : 'text-black'}`}>
                         {maneuver.positionError.toFixed(3)}<span className="text-lg ml-1">m</span>
                     </div>
-                    <div className="text-[10px] font-black font-mono mt-2 pt-2 border-t-2 border-black uppercase text-slate-500">
+                    <div className="text-[10px] font-bold font-mono mt-2 pt-2 border-t-2 border-black uppercase text-slate-500">
                         THRESHOLD: {threshold.toFixed(2)}m
                     </div>
                 </div>
 
-                <div className="bg-white border-4 border-black p-4 shadow-[4px_4px_0px_#000]">
-                    <div className="text-xs font-black font-mono text-slate-500 uppercase mb-2">CLOCK_OFFSET_DRIFT</div>
-                    <div className={`text-4xl font-black font-mono ${maneuver.clockError > 3 ? 'text-amber-500' : 'text-black'}`}>
+                <div className="bg-white border-4 border-black p-4 shadow-lg shadow-indigo-500/10">
+                    <div className="text-xs font-bold font-mono text-slate-500 uppercase mb-2">CLOCK_OFFSET_DRIFT</div>
+                    <div className={`text-4xl font-bold font-mono ${maneuver.clockError > 3 ? 'text-indigo-400' : 'text-black'}`}>
                         {maneuver.clockError.toFixed(3)}<span className="text-lg ml-1">m</span>
                     </div>
-                    <div className="text-[10px] font-black font-mono mt-2 pt-2 border-t-2 border-black uppercase text-slate-500">
+                    <div className="text-[10px] font-bold font-mono mt-2 pt-2 border-t-2 border-black uppercase text-slate-500">
                         THRESHOLD: 3.00m
                     </div>
                 </div>
@@ -141,22 +141,22 @@ const ManeuverRecommendation = ({ prediction, satellite, threshold = 5.0 }) => {
 
             {/* Maneuver Parameters */}
             {maneuver.isThresholdExceeded && (
-                <div className="p-6 bg-slate-900 text-white">
-                    <div className="text-sm font-black font-mono text-yellow-400 uppercase mb-6 flex items-center gap-2">
+                <div className="p-6 bg-[#0f172a]/80 text-white">
+                    <div className="text-sm font-bold font-mono text-yellow-400 uppercase mb-6 flex items-center gap-2">
                         <BoltIcon className="w-5 h-5" /> RECOM_CORRECTION_VECTORS
                     </div>
                     <div className="grid grid-cols-3 gap-8 text-left border-l-4 border-white pl-8">
                         <div>
-                            <div className="text-xs font-black text-slate-400 uppercase mb-1">DELTA_V</div>
-                            <div className="text-3xl font-black text-white font-mono">{maneuver.deltaV}<span className="text-sm ml-1">m/s</span></div>
+                            <div className="text-xs font-bold text-slate-400 uppercase mb-1">DELTA_V</div>
+                            <div className="text-3xl font-bold text-white font-mono">{maneuver.deltaV}<span className="text-sm ml-1">m/s</span></div>
                         </div>
                         <div>
-                            <div className="text-xs font-black text-slate-400 uppercase mb-1">BURN_TIME</div>
-                            <div className="text-3xl font-black text-white font-mono">{maneuver.burnDuration}<span className="text-sm ml-1">sec</span></div>
+                            <div className="text-xs font-bold text-slate-400 uppercase mb-1">BURN_TIME</div>
+                            <div className="text-3xl font-bold text-white font-mono">{maneuver.burnDuration}<span className="text-sm ml-1">sec</span></div>
                         </div>
                         <div>
-                            <div className="text-xs font-black text-slate-400 uppercase mb-1">FUEL_REQ</div>
-                            <div className="text-3xl font-black text-white font-mono">{maneuver.fuelMass}<span className="text-sm ml-1">kg</span></div>
+                            <div className="text-xs font-bold text-slate-400 uppercase mb-1">FUEL_REQ</div>
+                            <div className="text-3xl font-bold text-white font-mono">{maneuver.fuelMass}<span className="text-sm ml-1">kg</span></div>
                         </div>
                     </div>
                 </div>
@@ -174,11 +174,11 @@ const ManeuverRecommendation = ({ prediction, satellite, threshold = 5.0 }) => {
                         >
                             <div className="flex items-center gap-4">
                                 <CheckCircleIcon className="w-10 h-10 text-black" />
-                                <span className="text-2xl font-black italic uppercase italic">MANEUVER_SYNC_SUCCESS</span>
+                                <span className="text-2xl font-bold italic uppercase italic">MANEUVER_SYNC_SUCCESS</span>
                             </div>
                             <button
                                 onClick={handleReset}
-                                className="bg-black text-white px-6 py-2 font-black uppercase italic border-2 border-white hover:bg-white hover:text-black transition-all"
+                                className="bg-black text-white px-6 py-2 font-bold uppercase italic border-2 border-white hover:bg-white hover:text-black transition-all"
                             >
                                 RESET_CMD
                             </button>
@@ -190,8 +190,8 @@ const ManeuverRecommendation = ({ prediction, satellite, threshold = 5.0 }) => {
                             animate={{ opacity: 1 }}
                             className="flex flex-col items-center justify-center p-8 bg-red-500 text-white border-4 border-black shadow-[8px_8px_0px_#000]"
                         >
-                            <div className="text-sm font-black font-mono mb-4 animate-pulse">UPLINKING_FIRE_COMMANDS...</div>
-                            <span className="font-black text-7xl italic leading-none">
+                            <div className="text-sm font-bold font-mono mb-4 animate-pulse">UPLINKING_FIRE_COMMANDS...</div>
+                            <span className="font-bold text-7xl italic leading-none">
                                 T-{countdown}
                             </span>
                         </motion.div>
@@ -199,14 +199,14 @@ const ManeuverRecommendation = ({ prediction, satellite, threshold = 5.0 }) => {
                         <motion.button
                             key="execute"
                             onClick={handleExecute}
-                            className="w-full py-6 bg-black text-white text-3xl font-black uppercase italic tracking-widest border-4 border-black shadow-[12px_12px_0px_#f59e0b] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
+                            className="w-full py-6 bg-black text-white text-3xl font-bold uppercase italic tracking-wider border-4 border-black shadow-[12px_12px_0px_#f59e0b] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
                         >
                             EXECUTE_MANEUVER_CHAIN
                         </motion.button>
                     ) : (
                         <motion.div
                             key="nominal"
-                            className="flex items-center justify-center p-6 bg-emerald-100 border-4 border-emerald-400 text-emerald-800 font-black uppercase italic text-xl"
+                            className="flex items-center justify-center p-6 bg-emerald-100 border-4 border-emerald-400 text-emerald-800 font-bold uppercase italic text-xl"
                         >
                             <CheckCircleIcon className="w-8 h-8 mr-3" />
                             ORBIT_PARAMETERS_NOMINAL

@@ -5,3 +5,8 @@ export { default as ForecastLab } from './ForecastLab';
 export { default as Residuals } from './Residuals';
 export { default as ExportBulletin } from './ExportBulletin';
 export { default as ScientistWorkflow } from './ScientistWorkflow';
+export { default as BhuvanConnector } from './BhuvanConnector';
+export { default as Marketplace } from './Marketplace';
+export { default as DeveloperSDK } from './DeveloperSDK';
+export { default as WhatsAppDemo } from './WhatsAppDemo';
+export { default as AgentWorkflows } from './AgentWorkflows';

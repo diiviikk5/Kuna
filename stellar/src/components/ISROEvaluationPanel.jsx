@@ -206,8 +206,8 @@ const ISROEvaluationPanel = ({
     
     if (isLoading) {
         return (
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-8 flex items-center justify-center">
-                <ArrowPathIcon className="w-8 h-8 text-amber-500 animate-spin" />
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-8 flex items-center justify-center">
+                <ArrowPathIcon className="w-8 h-8 text-indigo-400 animate-spin" />
                 <span className="ml-4 text-slate-400 font-mono">Evaluating predictions...</span>
             </div>
         );
@@ -215,7 +215,7 @@ const ISROEvaluationPanel = ({
     
     if (!evaluation) {
         return (
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-8">
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-8">
                 <div className="text-center text-slate-500 font-mono">
                     <InformationCircleIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
                     <p className="text-sm">No evaluation data available</p>
@@ -240,10 +240,10 @@ const ISROEvaluationPanel = ({
                         {meetsBenchmark ? (
                             <CheckCircleIcon className="w-10 h-10 text-emerald-500" />
                         ) : (
-                            <XCircleIcon className="w-10 h-10 text-amber-500" />
+                            <XCircleIcon className="w-10 h-10 text-indigo-400" />
                         )}
                         <div>
-                            <h2 className="text-xl font-mono font-black text-white uppercase tracking-widest">
+                            <h2 className="text-xl font-semibold text-white uppercase tracking-wider">
                                 ISRO EVALUATION RESULTS
                             </h2>
                             <p className={`text-sm font-mono ${meetsBenchmark ? 'text-emerald-400' : 'text-amber-400'}`}>
@@ -253,7 +253,7 @@ const ISROEvaluationPanel = ({
                     </div>
                     
                     <div className="text-right">
-                        <div className="text-4xl font-mono font-black text-white">
+                        <div className="text-4xl font-semibold text-white">
                             {evaluation.overall.averageW.toFixed(4)}
                         </div>
                         <div className="text-xs font-mono text-slate-400">
@@ -266,21 +266,21 @@ const ISROEvaluationPanel = ({
                 <div className="flex gap-3 mt-6 pt-6 border-t border-slate-700">
                     <button
                         onClick={downloadCSV}
-                        className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-black font-mono font-black text-[10px] uppercase tracking-widest hover:bg-emerald-500 transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-black font-semibold text-[10px] uppercase tracking-wider hover:bg-emerald-500 transition-all"
                     >
                         <ArrowDownTrayIcon className="w-4 h-4" />
                         Download Report (CSV)
                     </button>
                     <button
                         onClick={downloadResidualsCSV}
-                        className="flex items-center gap-2 px-4 py-2 bg-cyan-600 text-black font-mono font-black text-[10px] uppercase tracking-widest hover:bg-cyan-500 transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-cyan-600 text-black font-semibold text-[10px] uppercase tracking-wider hover:bg-cyan-500 transition-all"
                     >
                         <DocumentTextIcon className="w-4 h-4" />
                         Download Residuals (CSV)
                     </button>
                     <button
                         onClick={downloadJSON}
-                        className="flex items-center gap-2 px-4 py-2 bg-amber-600 text-black font-mono font-black text-[10px] uppercase tracking-widest hover:bg-amber-500 transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-indigo-500 text-black font-semibold text-[10px] uppercase tracking-wider hover:bg-indigo-400 transition-all"
                     >
                         <ArrowDownTrayIcon className="w-4 h-4" />
                         Download Full Report (JSON)
@@ -289,13 +289,13 @@ const ISROEvaluationPanel = ({
             </div>
             
             {/* Priority 1: Shapiro-Wilk Test Results */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="w-8 h-8 bg-amber-500/20 flex items-center justify-center border border-amber-500/50 text-amber-500 font-mono font-black text-sm">
+                    <div className="w-8 h-8 bg-indigo-400/20 flex items-center justify-center border border-amber-500/50 text-amber-500 font-semibold text-sm">
                         P1
                     </div>
                     <div>
-                        <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest">
+                        <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
                             SHAPIRO-WILK NORMALITY TEST
                         </h3>
                         <p className="text-[10px] font-mono text-slate-500">Priority 1 Evaluation Criteria</p>
@@ -316,25 +316,25 @@ const ISROEvaluationPanel = ({
                                         : 'border-rose-800 bg-rose-950/20'
                                 }`}
                             >
-                                <div className="text-[10px] font-mono font-black text-slate-400 uppercase mb-2">
+                                <div className="text-[10px] font-semibold text-slate-400 uppercase mb-2">
                                     {paramLabel}
                                 </div>
                                 <div className="space-y-2">
                                     <div className="flex justify-between">
                                         <span className="text-[10px] font-mono text-slate-500">W-Stat:</span>
-                                        <span className="text-sm font-mono font-black text-white">
+                                        <span className="text-sm font-semibold text-white">
                                             {data.shapiroWilk.W.toFixed(4)}
                                         </span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-[10px] font-mono text-slate-500">p-Value:</span>
-                                        <span className="text-sm font-mono font-black text-amber-400">
+                                        <span className="text-sm font-semibold text-amber-400">
                                             {data.shapiroWilk.pValue.toFixed(4)}
                                         </span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-[10px] font-mono text-slate-500">H0:</span>
-                                        <span className={`text-xs font-mono font-black ${
+                                        <span className={`text-xs font-semibold ${
                                             !data.shapiroWilk.rejectNull ? 'text-emerald-400' : 'text-rose-400'
                                         }`}>
                                             {data.shapiroWilk.hypothesis === 0 ? 'ACCEPT' : 'REJECT'}
@@ -347,22 +347,22 @@ const ISROEvaluationPanel = ({
                 </div>
                 
                 {/* Average Score */}
-                <div className="p-4 bg-slate-950 border border-slate-800">
+                <div className="p-4 bg-[#020617] border border-slate-800">
                     <div className="grid grid-cols-3 gap-8 text-center">
                         <div>
-                            <div className="text-2xl font-mono font-black text-white">
+                            <div className="text-2xl font-semibold text-white">
                                 {evaluation.overall.averageW.toFixed(4)}
                             </div>
                             <div className="text-[10px] font-mono text-slate-500 uppercase">Avg W-Statistic</div>
                         </div>
                         <div>
-                            <div className="text-2xl font-mono font-black text-amber-400">
+                            <div className="text-2xl font-semibold text-amber-400">
                                 {evaluation.overall.averagePValue.toFixed(4)}
                             </div>
                             <div className="text-[10px] font-mono text-slate-500 uppercase">Avg p-Value</div>
                         </div>
                         <div>
-                            <div className={`text-2xl font-mono font-black ${
+                            <div className={`text-2xl font-semibold ${
                                 !evaluation.overall.shapiroWilk.rejectNull ? 'text-emerald-400' : 'text-rose-400'
                             }`}>
                                 {evaluation.overall.shapiroWilk.hypothesis}
@@ -374,13 +374,13 @@ const ISROEvaluationPanel = ({
             </div>
             
             {/* Priority 2: Mean and Standard Deviation */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="w-8 h-8 bg-cyan-500/20 flex items-center justify-center border border-cyan-500/50 text-cyan-500 font-mono font-black text-sm">
+                    <div className="w-8 h-8 bg-cyan-500/20 flex items-center justify-center border border-cyan-500/50 text-cyan-500 font-semibold text-sm">
                         P2
                     </div>
                     <div>
-                        <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest">
+                        <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
                             RESIDUAL STATISTICS
                         </h3>
                         <p className="text-[10px] font-mono text-slate-500">Priority 2 Evaluation Criteria (Mean & Std)</p>
@@ -391,12 +391,12 @@ const ISROEvaluationPanel = ({
                     <table className="w-full text-left">
                         <thead>
                             <tr className="border-b border-slate-800">
-                                <th className="p-3 text-[10px] font-mono font-black text-slate-400 uppercase">Parameter</th>
-                                <th className="p-3 text-[10px] font-mono font-black text-slate-400 uppercase">Mean (m)</th>
-                                <th className="p-3 text-[10px] font-mono font-black text-slate-400 uppercase">Std Dev (m)</th>
-                                <th className="p-3 text-[10px] font-mono font-black text-slate-400 uppercase">Min (m)</th>
-                                <th className="p-3 text-[10px] font-mono font-black text-slate-400 uppercase">Max (m)</th>
-                                <th className="p-3 text-[10px] font-mono font-black text-slate-400 uppercase">Count</th>
+                                <th className="p-3 text-[10px] font-semibold text-slate-400 uppercase">Parameter</th>
+                                <th className="p-3 text-[10px] font-semibold text-slate-400 uppercase">Mean (m)</th>
+                                <th className="p-3 text-[10px] font-semibold text-slate-400 uppercase">Std Dev (m)</th>
+                                <th className="p-3 text-[10px] font-semibold text-slate-400 uppercase">Min (m)</th>
+                                <th className="p-3 text-[10px] font-semibold text-slate-400 uppercase">Max (m)</th>
+                                <th className="p-3 text-[10px] font-semibold text-slate-400 uppercase">Count</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -404,7 +404,7 @@ const ISROEvaluationPanel = ({
                                 const stats = evaluation.byParameter[param].statistics;
                                 return (
                                     <tr key={param} className="border-b border-slate-800/50">
-                                        <td className="p-3 text-sm font-mono font-black text-white uppercase">
+                                        <td className="p-3 text-sm font-semibold text-white uppercase">
                                             {param === 'clock' ? 'Clock' : param.toUpperCase()}_Error
                                         </td>
                                         <td className="p-3 text-sm font-mono text-cyan-400">
@@ -426,23 +426,23 @@ const ISROEvaluationPanel = ({
                                 );
                             })}
                             {/* Overall row */}
-                            <tr className="bg-slate-950">
-                                <td className="p-3 text-sm font-mono font-black text-emerald-400 uppercase">
+                            <tr className="bg-[#020617]">
+                                <td className="p-3 text-sm font-semibold text-emerald-400 uppercase">
                                     OVERALL
                                 </td>
-                                <td className="p-3 text-sm font-mono font-black text-cyan-400">
+                                <td className="p-3 text-sm font-semibold text-cyan-400">
                                     {evaluation.overall.statistics.mean.toFixed(6)}
                                 </td>
-                                <td className="p-3 text-sm font-mono font-black text-amber-400">
+                                <td className="p-3 text-sm font-semibold text-amber-400">
                                     {evaluation.overall.statistics.std.toFixed(6)}
                                 </td>
-                                <td className="p-3 text-sm font-mono font-black text-slate-300">
+                                <td className="p-3 text-sm font-semibold text-slate-300">
                                     {evaluation.overall.statistics.min.toFixed(6)}
                                 </td>
-                                <td className="p-3 text-sm font-mono font-black text-slate-300">
+                                <td className="p-3 text-sm font-semibold text-slate-300">
                                     {evaluation.overall.statistics.max.toFixed(6)}
                                 </td>
-                                <td className="p-3 text-sm font-mono font-black text-slate-500">
+                                <td className="p-3 text-sm font-semibold text-slate-500">
                                     {evaluation.overall.statistics.count}
                                 </td>
                             </tr>
@@ -452,13 +452,13 @@ const ISROEvaluationPanel = ({
             </div>
             
             {/* Priority 3: Q-Q Plot */}
-            <div className="neo-panel bg-slate-900 border-2 border-slate-700 p-6">
+            <div className="neo-panel bg-[#0f172a]/80 border border-white/[0.06] p-6">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="w-8 h-8 bg-purple-500/20 flex items-center justify-center border border-purple-500/50 text-purple-500 font-mono font-black text-sm">
+                    <div className="w-8 h-8 bg-purple-500/20 flex items-center justify-center border border-purple-500/50 text-purple-500 font-semibold text-sm">
                         P3
                     </div>
                     <div>
-                        <h3 className="text-sm font-mono font-black text-white uppercase tracking-widest">
+                        <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
                             Q-Q PLOT (NORMALITY VISUALIZATION)
                         </h3>
                         <p className="text-[10px] font-mono text-slate-500">Priority 3 Evaluation Criteria</p>
@@ -469,9 +469,9 @@ const ISROEvaluationPanel = ({
                 <div className="flex gap-2 mb-4">
                     <button
                         onClick={() => setSelectedParameter('all')}
-                        className={`px-3 py-1 text-[10px] font-mono font-black uppercase ${
+                        className={`px-3 py-1 text-[10px] font-semibold uppercase ${
                             selectedParameter === 'all' 
-                                ? 'bg-amber-500 text-black' 
+                                ? 'bg-indigo-400 text-black' 
                                 : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
                         }`}
                     >
@@ -481,9 +481,9 @@ const ISROEvaluationPanel = ({
                         <button
                             key={param}
                             onClick={() => setSelectedParameter(param)}
-                            className={`px-3 py-1 text-[10px] font-mono font-black uppercase ${
+                            className={`px-3 py-1 text-[10px] font-semibold uppercase ${
                                 selectedParameter === param 
-                                    ? 'bg-amber-500 text-black' 
+                                    ? 'bg-indigo-400 text-black' 
                                     : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
                             }`}
                         >
@@ -492,7 +492,7 @@ const ISROEvaluationPanel = ({
                     ))}
                 </div>
                 
-                <div className="bg-slate-950 border border-slate-800 p-4">
+                <div className="bg-[#020617] border border-slate-800 p-4">
                     <QQPlot 
                         residuals={
                             selectedParameter === 'all' 
@@ -510,8 +510,8 @@ const ISROEvaluationPanel = ({
             </div>
             
             {/* Benchmark Comparison */}
-            <div className="neo-panel bg-slate-950 border-2 border-slate-800 p-6">
-                <h3 className="text-sm font-mono font-black text-slate-400 uppercase tracking-widest mb-4">
+            <div className="neo-panel bg-[#020617] border border-white/[0.06] p-6">
+                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">
                     ISRO BENCHMARK COMPARISON
                 </h3>
                 
@@ -520,14 +520,14 @@ const ISROEvaluationPanel = ({
                         <div className="text-[10px] font-mono text-slate-500 uppercase mb-2">W-Statistic</div>
                         <div className="flex items-center justify-center gap-4">
                             <div>
-                                <div className="text-xl font-mono font-black text-white">
+                                <div className="text-xl font-semibold text-white">
                                     {evaluation.overall.averageW.toFixed(4)}
                                 </div>
                                 <div className="text-[9px] text-slate-600">YOUR SCORE</div>
                             </div>
                             <div className="text-slate-600">vs</div>
                             <div>
-                                <div className="text-xl font-mono font-black text-amber-500">
+                                <div className="text-xl font-semibold text-indigo-400">
                                     {BENCHMARK.W}
                                 </div>
                                 <div className="text-[9px] text-slate-600">BENCHMARK</div>
@@ -539,14 +539,14 @@ const ISROEvaluationPanel = ({
                         <div className="text-[10px] font-mono text-slate-500 uppercase mb-2">p-Value</div>
                         <div className="flex items-center justify-center gap-4">
                             <div>
-                                <div className="text-xl font-mono font-black text-white">
+                                <div className="text-xl font-semibold text-white">
                                     {evaluation.overall.averagePValue.toFixed(4)}
                                 </div>
                                 <div className="text-[9px] text-slate-600">YOUR SCORE</div>
                             </div>
                             <div className="text-slate-600">vs</div>
                             <div>
-                                <div className="text-xl font-mono font-black text-amber-500">
+                                <div className="text-xl font-semibold text-indigo-400">
                                     {BENCHMARK.pValue}
                                 </div>
                                 <div className="text-[9px] text-slate-600">BENCHMARK</div>
@@ -558,7 +558,7 @@ const ISROEvaluationPanel = ({
                         <div className="text-[10px] font-mono text-slate-500 uppercase mb-2">Hypothesis</div>
                         <div className="flex items-center justify-center gap-4">
                             <div>
-                                <div className={`text-xl font-mono font-black ${
+                                <div className={`text-xl font-semibold ${
                                     evaluation.overall.shapiroWilk.hypothesis === 0 ? 'text-emerald-400' : 'text-rose-400'
                                 }`}>
                                     {evaluation.overall.shapiroWilk.hypothesis}
@@ -567,7 +567,7 @@ const ISROEvaluationPanel = ({
                             </div>
                             <div className="text-slate-600">vs</div>
                             <div>
-                                <div className="text-xl font-mono font-black text-emerald-500">
+                                <div className="text-xl font-semibold text-emerald-500">
                                     {BENCHMARK.hypothesis}
                                 </div>
                                 <div className="text-[9px] text-slate-600">TARGET</div>

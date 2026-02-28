@@ -57,7 +57,7 @@ const DashboardLoader = ({ onComplete }) => {
         <AnimatePresence>
             {!isComplete && (
                 <motion.div
-                    className="fixed inset-0 z-50 bg-slate-950"
+                    className="fixed inset-0 z-50 bg-[#020617]"
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                 >
@@ -78,13 +78,13 @@ const DashboardLoader = ({ onComplete }) => {
                             {/* Header */}
                             <div className="mb-12">
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-3 h-3 bg-amber-500" />
-                                    <span className="text-[10px] font-mono font-black text-slate-500 uppercase tracking-widest">
+                                    <div className="w-3 h-3 bg-indigo-400" />
+                                    <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
                                         SYSTEM_INITIALIZATION
                                     </span>
                                 </div>
-                                <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight">
-                                    STELLAR<span className="text-amber-500">-v1k</span>
+                                <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+                                    STELLAR<span className="text-indigo-400">-v1k</span>
                                 </h1>
                                 <p className="text-sm font-mono text-slate-400 mt-2">
                                     AI-Powered GNSS Error Forecasting Platform
@@ -103,12 +103,12 @@ const DashboardLoader = ({ onComplete }) => {
                                     >
                                         <div className={`w-2 h-2 ${
                                             step.status === 'complete' ? 'bg-emerald-500' :
-                                            step.status === 'loading' ? 'bg-amber-500 animate-pulse' :
+                                            step.status === 'loading' ? 'bg-indigo-400 animate-pulse' :
                                             'bg-slate-700'
                                         }`} />
                                         <span className={`text-xs font-mono font-bold uppercase tracking-wider ${
                                             step.status === 'complete' ? 'text-emerald-500' :
-                                            step.status === 'loading' ? 'text-amber-500' :
+                                            step.status === 'loading' ? 'text-indigo-400' :
                                             'text-slate-600'
                                         }`}>
                                             {step.text}
@@ -123,10 +123,10 @@ const DashboardLoader = ({ onComplete }) => {
                             {/* Progress Bar */}
                             <div className="space-y-2">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-[10px] font-mono font-black text-slate-500 uppercase tracking-widest">
+                                    <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
                                         LOADING_PROGRESS
                                     </span>
-                                    <span className="text-xs font-mono font-black text-white">
+                                    <span className="text-xs font-semibold text-white">
                                         {progress}%
                                     </span>
                                 </div>
@@ -142,7 +142,7 @@ const DashboardLoader = ({ onComplete }) => {
 
                             {/* Footer */}
                             <div className="mt-8 pt-8 border-t border-slate-800/50">
-                                <div className="flex items-center justify-between text-[9px] font-mono text-slate-600 uppercase tracking-widest">
+                                <div className="flex items-center justify-between text-[9px] font-mono text-slate-600 uppercase tracking-wider">
                                     <span>ISRO // SMART_INDIA_HACKATHON</span>
                                     <span>VERSION_1.0.0</span>
                                 </div>
